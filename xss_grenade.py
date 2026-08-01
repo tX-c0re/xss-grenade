@@ -3409,12 +3409,12 @@ def _run_headless_crawl(target, opts, auth_opts, cb, cancel_check):
                 password_selector,submit_selector,logged_in_selector,logged_in_text,
                 extra_headers}"""
     if not _HEADLESS_CRAWLER_AVAILABLE or _HeadlessCrawler is None:
-        cb["on_log"]("[CRAWL] headless crawler nedostupný (chybí modul/Playwright)", "warn")
+        cb["on_log"]("[CRAWL] headless crawler unavailable (missing module/Playwright)", "warn")
         return None
     try:
         from playwright.sync_api import sync_playwright
     except Exception:
-        cb["on_log"]("[CRAWL] Playwright není nainstalován — headless crawl přeskočen", "warn")
+        cb["on_log"]("[CRAWL] Playwright not installed — headless crawl skipped", "warn")
         return None
 
     opts = opts or {}
@@ -3448,10 +3448,10 @@ def _run_headless_crawl(target, opts, auth_opts, cb, cancel_check):
         crawler = _HeadlessCrawler(_br, cfg, auth,
                                    on_log=lambda m, l="info": cb["on_log"](m, l),
                                    cancel_check=cancel_check)
-        cb["on_log"]("[CRAWL] authenticated headless-driven crawl startuje…", "info")
+        cb["on_log"]("[CRAWL] authenticated headless-driven crawl starting…", "info")
         return crawler.crawl([target])
     except Exception as e:
-        cb["on_log"](f"[CRAWL] headless crawl chyba: {e}", "warn")
+        cb["on_log"](f"[CRAWL] headless crawl error: {e}", "warn")
         return None
     finally:
         for x, fn in ((_br, "close"), (_pw, "stop")):
@@ -3744,6 +3744,13 @@ SCRIPT_CONTEXT_PAYLOADS = [
 
 # Kontext: uvnitř HTML atributu jako value="..." nebo data-x='...'
 ATTR_CONTEXT_PAYLOADS = [
+    # Tag-injection breakout — closes the attribute AND the tag, then injects a
+    # self-firing element. Works regardless of the host tag (unlike on* handlers
+    # on <a>, which need hover/focus). Critical for reflections mid-value in a
+    # quoted url attribute (e.g. a query param inside href="?...&p=HERE").
+    '"><svg onload=alert(1)>',
+    "'><svg onload=alert(1)>",
+    '"><img src=x onerror=alert(1)>',
     # Klasický breakout ze double-quoted atributu
     '" onmouseover=alert(1) x="',
     '" onfocus=alert(1) autofocus x="',
@@ -3974,7 +3981,14 @@ def get_context_payloads(context: str) -> List[str]:
     if "event" in ctx:  # event_handler
         return ATTR_CONTEXT_PAYLOADS  # event handlery řeš jako atribut
     if "href" in ctx or "url" in ctx or "src" in ctx:
-        return URL_CONTEXT_PAYLOADS
+        # A URL attribute is exploitable TWO ways and we can't tell which from the
+        # context string alone: scheme injection at the value start
+        # (javascript:/data: → URL bank) OR a quote breakout mid-value — the only
+        # vector when a reflected query param sits inside href="?...&p=HERE", where
+        # the scheme slot is already taken and every scheme payload is inert. Send
+        # both banks (quote-breakout first) so mid-value href/src reflections are
+        # actually caught. dict.fromkeys preserves order and de-dupes.
+        return list(dict.fromkeys(ATTR_CONTEXT_PAYLOADS + URL_CONTEXT_PAYLOADS))
     if "attr" in ctx:
         return ATTR_CONTEXT_PAYLOADS
     if "comment" in ctx:
@@ -6596,9 +6610,9 @@ def crawl_site(start_url: str,
                          f"({robots_rules.n_disallow} Disallow / {_n_allow} Allow)",
                          "info")
             if not _is_allowed_by_robots(start_norm, robots_rules):
-                cb["on_log"]("robots.txt zakazuje samotný cíl skenu — "
-                             "stahuji ho i tak (explicitní zadání operátora); "
-                             "odkazy z něj už pravidla respektují.", "warn")
+                cb["on_log"]("robots.txt disallows the scan target itself — "
+                             "fetching it anyway (explicit operator request); "
+                             "links from it still respect the rules.", "warn")
 
     # v10.87: seed from sitemap.xml — the site's own published URL space.
     # Without it, anything not reachable by following links within max_depth was
@@ -6636,9 +6650,9 @@ def crawl_site(start_url: str,
             # Honest wording: these are QUEUED, not promised fetches — the total
             # stays capped at max_pages.
             _sm_param = sum(1 for _q in sitemap_seeded if urlparse(_q).query)
-            cb["on_log"](f"sitemap.xml: +{_sm_new} URL do fronty "
-                         f"({_sm_param} s parametrem, ty jdou před statické "
-                         f"odkazy; strop zůstává max_pages={max_pages})", "info")
+            cb["on_log"](f"sitemap.xml: +{_sm_new} URLs queued "
+                         f"({_sm_param} with parameters, prioritized before static "
+                         f"links; cap stays max_pages={max_pages})", "info")
     except Exception:
         pass   # discovery bonus only — never let it break the crawl
 
@@ -14778,19 +14792,19 @@ def run_scan(target: str,
                     _resumed_findings = _ckpt.get_findings()
                     _done = _ckpt.get_phase_output  # noqa: just to show usage
                     cb["on_log"](
-                        f"[RESUME] Navazuji na checkpoint: dokončené fáze="
+                        f"[RESUME] Resuming from checkpoint: completed phases="
                         f"{_st.get('phases_done', [])}, "
-                        f"obnoveno {len(_resumed_findings)} nálezů", "info")
+                        f"restored {len(_resumed_findings)} findings", "info")
                     # v10.77: DON'T emit here — reset_emit_state() below wipes the
                     # emit state, and a bare cb['on_hit'] bypasses _emitted_hits
                     # (so the report + CI gate never saw restored findings). The
                     # restore is deferred to _reseed_resumed_findings() AFTER reset.
                 else:
                     cb["on_log"](
-                        "[RESUME] Žádný kompatibilní checkpoint pro tento "
-                        "sken — začínám od začátku.", "info")
+                        "[RESUME] No compatible checkpoint for this "
+                        "scan — starting from scratch.", "info")
         except Exception as _cke:
-            cb["on_log"](f"[RESUME] checkpoint init selhal: {_cke}", "warning")
+            cb["on_log"](f"[RESUME] checkpoint init failed: {_cke}", "warning")
             _ckpt = None
 
     # ── v10.7: Set adaptive WAF state at scan start ──
@@ -15071,7 +15085,7 @@ def run_scan(target: str,
         if not _active_detected and not _early_waf:
             cb["on_log"]("[WAF] probe: no WAF detected (target responds normally)", "info")
     except Exception as _we:
-        cb["on_log"](f"[!] WAF probe chyba (non-fatal): {_we}", "debug")
+        cb["on_log"](f"[!] WAF probe error (non-fatal): {_we}", "debug")
 
     # ── CSP analýza ──────────────────────────────────────────────────────────
     csp_result = analyze_csp(r)
@@ -15107,8 +15121,8 @@ def run_scan(target: str,
         param_urls = list(_co.get("param_urls", []))
         _crawl_from_ckpt = True
         cb["on_log"](
-            f"[RESUME] Crawl přeskočen — obnoveno {len(pages)} stránek, "
-            f"{len(param_urls)} param URL z checkpointu.", "info")
+            f"[RESUME] Crawl skipped — restored {len(pages)} pages, "
+            f"{len(param_urls)} param URLs from checkpoint.", "info")
     if (not _crawl_from_ckpt) and crawl_depth and crawl_depth > 0:
         cb["on_phase"]("crawl", {"target": target, "depth": crawl_depth, "max_pages": crawl_max_pages})
 
@@ -15149,7 +15163,7 @@ def run_scan(target: str,
                                   + " (passive, from crawl traffic)",
                 })
                 cb["on_log"](
-                    f"[WAF] Detekován z provozu: {_name} "
+                    f"[WAF] Detected from traffic: {_name} "
                     f"(confidence: {_conf}%) — {wf.get('reason','')[:80]}",
                     "info"
                 )
@@ -15180,8 +15194,8 @@ def run_scan(target: str,
 
         if not _passive_waf_found:
             cb["on_log"](
-                "[WAF] Pasivní detekce: žádný známý WAF v crawl provozu "
-                "(může být custom/bez signatury — projeví se v útočné fázi)",
+                "[WAF] Passive detection: no known WAF in crawl traffic "
+                "(may be custom/signatureless — will surface in the attack phase)",
                 "info")
         cb["on_log"](f"[OK] Found {len(param_urls)} unique URLs with parameters", "info")
     else:
@@ -15204,7 +15218,7 @@ def run_scan(target: str,
                 target, headless_crawl_opts, crawl_auth, cb,
                 lambda: _cancelled.is_set())
         except Exception as _hce:
-            cb["on_log"](f"[CRAWL] headless crawl selhal: {_hce}", "warn")
+            cb["on_log"](f"[CRAWL] headless crawl failed: {_hce}", "warn")
             _hcres = None
         if _hcres is not None:
             _seen_pg = set(pages)
@@ -15253,9 +15267,9 @@ def run_scan(target: str,
                         _xhr_param_hints.add(str(_bk))
             if _api_new or _api_params or _xhr_param_hints:
                 cb["on_log"](
-                    f"[CRAWL] XHR merge: +{_api_new} endpointů, "
-                    f"+{_api_params} s parametry, "
-                    f"{len(_xhr_param_hints)} názvů polí z POST těl", "info")
+                    f"[CRAWL] XHR merge: +{_api_new} endpoints, "
+                    f"+{_api_params} with parameters, "
+                    f"{len(_xhr_param_hints)} field names from POST bodies", "info")
 
             # propíš session cookies z authed crawlu do HTTP session
             _napplied = 0
@@ -15268,9 +15282,9 @@ def run_scan(target: str,
                 except Exception:
                     pass
             cb["on_log"](
-                f"[CRAWL] headless merge: +{len(_hcres.pages)} stránek, "
-                f"+{len(_hcres.param_urls)} param URL, +{len(_hcres.forms)} formulářů, "
-                f"+{len(_hcres.api_endpoints)} API endpointů, {_napplied} cookies → session "
+                f"[CRAWL] headless merge: +{len(_hcres.pages)} pages, "
+                f"+{len(_hcres.param_urls)} param URLs, +{len(_hcres.forms)} forms, "
+                f"+{len(_hcres.api_endpoints)} API endpoints, {_napplied} cookies → session "
                 f"(auth={_hcres.auth_method}/{_hcres.auth_ok})", "info")
 
     # ── Scope enforcement ────────────────────────────────────────────────────
@@ -15446,8 +15460,8 @@ def run_scan(target: str,
                     "[PWL] No hidden reflected params found", "info")
     elif not _PARAM_WORDLIST_AVAILABLE and param_wordlist:
         cb["on_log"](
-            "Param wordlist modul: _param_wordlist.py není dostupný "
-            "(import selhal) — fáze přeskočena", "info")
+            "Param wordlist module: _param_wordlist.py unavailable "
+            "(import failed) — phase skipped", "info")
 
     # ── Limity ────────────────────────────────────────────────────────────────
     if limit_urls:
@@ -15685,8 +15699,8 @@ def run_scan(target: str,
                 open_redirect or proto_pollution or dom_clobbering or \
                 trusted_types or ssrf_scan_enabled or enable_header_scan:
             cb["on_log"](
-                "No URLs with parameters — pokračuji page-based / hlavičkové "
-                "skeny (path/cookie/static-JS/CVE/JSONP/SVG/CORS/CRLF/XSSI/"
+                "No URLs with parameters — continuing with page-based / header "
+                "scans (path/cookie/static-JS/CVE/JSONP/SVG/CORS/CRLF/XSSI/"
                 "SSRF/open-redirect/proto-pollution/destructive).", "info")
         else:
             cb["on_log"]("No URLs with parameters found. Exiting.", "info")
@@ -16346,7 +16360,7 @@ def run_scan(target: str,
                 )
             else:
                 cb["on_log"](
-                    f"[{phase_name}] health probe selhal: "
+                    f"[{phase_name}] health probe failed: "
                     f"{type(e).__name__} — skipping the phase", "warn"
                 )
             return False
@@ -16416,7 +16430,7 @@ def run_scan(target: str,
     if _resumed_findings:
         _n_reseed = _reseed_resumed_findings(_resumed_findings, cb)
         if _n_reseed:
-            cb["on_log"](f"[RESUME] {_n_reseed} obnovených nálezů zařazeno do reportu + CI gate", "info")
+            cb["on_log"](f"[RESUME] {_n_reseed} restored findings added to the report + CI gate", "info")
     # ════════════════════════════════════════════════════════════════════════
 
     # v10.16: found_params už inicializován výš (před resume guardem) a
@@ -16660,7 +16674,7 @@ def run_scan(target: str,
                 stored_post_targets = list(set(stored_post_targets) | _iframe_extra)
                 verify_urls = list(set(verify_urls) | _iframe_extra)
                 cb["on_log"](f"[STORED] iframe expansion: +{len(_iframe_extra)} "
-                             f"frame target(s) (formuláře v iframe)", "info")
+                             f"frame target(s) (forms in iframe)", "info")
         except Exception:
             pass
 
@@ -16751,8 +16765,8 @@ def run_scan(target: str,
                 else:
                     _stored_pw_cookies = _requests_cookies_to_pw(
                         session_workers, target)
-                    cb["on_log"]("[STORED] headless potvrzení zapnuto "
-                                 "(reálný render view stránek)", "info")
+                    cb["on_log"]("[STORED] headless confirmation enabled "
+                                 "(real render view of pages)", "info")
             except Exception:
                 _stored_hv = None
         try:
@@ -16874,7 +16888,7 @@ def run_scan(target: str,
                   _emit_hit(cb, _hd)
                   cb["on_log"](
                       f"[STORED ✓ CONFIRMED] client-rendered XSS at {u} "
-                      f"(headless, HTTP reflexe to neviděla)", "info")
+                      f"(headless; HTTP reflection did not see it)", "info")
 
           # ── v10.38: browser-driven form XSS (client-side / localStorage) ──
           # Level-2 typ: formulář se odešle JS (onsubmit→false), data jdou do
@@ -16890,7 +16904,7 @@ def run_scan(target: str,
                   list(stored_post_targets) + list(verify_urls)))[:25]
               cb["on_log"](
                   f"[STORED] browser-driven form XSS probe: {len(_form_targets)} "
-                  f"stránek (client-side / localStorage / JS submit)", "info")
+                  f"pages (client-side / localStorage / JS submit)", "info")
               for _ft in _form_targets:
                   if _cancelled.is_set():
                       break
@@ -16899,7 +16913,7 @@ def run_scan(target: str,
                           _ft, _SRC_FORM, sinks=[_SINK_HTML, _SINK_ATTR],
                           cookies=_stored_pw_cookies, stop_after_first=True)
                   except Exception as _fe:
-                      cb["on_log"](f"[STORED] form probe chyba {_ft}: {_fe}", "debug")
+                      cb["on_log"](f"[STORED] form probe error {_ft}: {_fe}", "debug")
                       continue
                   for _r in _fres:
                       _key = (_ft, "form")
@@ -17886,11 +17900,11 @@ def run_scan(target: str,
                         n_synth = fuzzer.prime_synth(_rich, canary="1")
                         if n_synth:
                             cb["on_log"](
-                                f"[SYNTH] {param_c}: {n_synth} cílených breakout "
-                                f"payloadů z naparsovaného kontextu", "debug")
+                                f"[SYNTH] {param_c}: {n_synth} targeted breakout "
+                                f"payloads from the parsed context", "debug")
                         ctx = fuzzer.get_context(session_main, url_c, param_c, timeout, follow_redirects, probe_enabled=fuzz_ctx_probe)
                     except Exception as e:
-                        cb["on_log"](f"[!] Fuzz probe chyba pro {param_c}: {e}", "debug")
+                        cb["on_log"](f"[!] Fuzz probe error for {param_c}: {e}", "debug")
                         ctx = "html"
                     hits_for_param = 0
                     iter_count     = 0
@@ -17904,7 +17918,7 @@ def run_scan(target: str,
                         try:
                             batch_list = list(fuzzer.batch(ctx, n=fuzz_batch))
                         except Exception as e:
-                            cb["on_log"](f"[!] Fuzz batch chyba: {e}", "debug")
+                            cb["on_log"](f"[!] Fuzz batch error: {e}", "debug")
                             break
                         for base_p, mut_p, ops in batch_list:
                             if waf_aborted:
@@ -17975,7 +17989,7 @@ def run_scan(target: str,
                                                 run_active_probe=True)
                                         except Exception as _ee:
                                             cb["on_log"](
-                                                f"[!] Fuzz emit chyba: {_ee}",
+                                                f"[!] Fuzz emit error: {_ee}",
                                                 "debug")
                                             emitted = False
                                         if emitted:
@@ -18008,7 +18022,7 @@ def run_scan(target: str,
                                     waf_aborted = True
                                     break
                             except Exception as e:
-                                cb["on_log"](f"[!] Fuzz iter chyba: {e}", "debug")
+                                cb["on_log"](f"[!] Fuzz iter error: {e}", "debug")
                                 bar()
                                 continue
                             # Lokální sleep (mezi iteracemi — respektuje throttling)
@@ -18111,7 +18125,7 @@ def run_scan(target: str,
                                 # CSP blokování — informativně, ne hit
                                 cb["on_log"](f"CSP blokoval DOM validaci: {url_c} param:{param_c}", "info")
                         except Exception as e:
-                            cb["on_log"](f"[!] DOM validace chyba pro {param_c}: {e}", "debug")
+                            cb["on_log"](f"[!] DOM validation error for {param_c}: {e}", "debug")
                         finally:
                             bar()
                             dom_done += 1
@@ -18127,7 +18141,7 @@ def run_scan(target: str,
       if _BLIND_OOB_AVAILABLE and _BlindOrch is not None:
         # ── v10.47: korelovaná OOB blind XSS (per-token, exfil, is_blind) ──
         try:
-            cb["on_log"](f"Blind XSS (korelovaný OOB) → collector {blind_oob_url}", "info")
+            cb["on_log"](f"Blind XSS (correlated OOB) → collector {blind_oob_url}", "info")
             cb["on_phase"]("blind_xss", {"oob_url": blind_oob_url})
             _orch = _BlindOrch(_OOBConfig(collector_url=blind_oob_url))
 
@@ -18209,11 +18223,11 @@ def run_scan(target: str,
                         _json.dump(_orch.export_map(), _mf, ensure_ascii=False, indent=2)
                     cb["on_log"](f"[BLIND] injection mapa → {blind_map_path}", "info")
                 except Exception as _me:
-                    cb["on_log"](f"[BLIND] zápis mapy selhal: {_me}", "warn")
+                    cb["on_log"](f"[BLIND] map write failed: {_me}", "warn")
 
             cb["on_log"](
-                f"[OK] Blind XSS: {len(blind_xss_injections)} korelovaných probů "
-                f"naseto (query+header+form) → collector {blind_oob_url}", "info")
+                f"[OK] Blind XSS: {len(blind_xss_injections)} correlated probes "
+                f"seeded (query+header+form) → collector {blind_oob_url}", "info")
 
             # volitelný poll collectoru (rychle-vystřelující blind XSS, např. log viewer)
             if blind_poll_secs and blind_poll_secs > 0:
@@ -18244,7 +18258,7 @@ def run_scan(target: str,
                                                 kind="blind", evidence=_bf.fired_at_url)
                         _emit_hit(cb, _hd)
                         cb["on_log"](
-                            f"[BLIND ✓ OOB CONFIRMED] {_bf.param} → vystřelilo v "
+                            f"[BLIND ✓ OOB CONFIRMED] {_bf.param} → fired in "
                             f"{_bf.fired_at_url[:60]} (blind={_bf.is_blind})", "info")
                     time.sleep(min(3.0, blind_poll_secs / 5 if blind_poll_secs > 5 else 1.0))
         except Exception as e:
@@ -18252,7 +18266,7 @@ def run_scan(target: str,
       else:
         # ── legacy fallback (bez korelace) ──
         try:
-            cb["on_log"](f"Blind XSS sken: OOB callback → {blind_oob_url}", "info")
+            cb["on_log"](f"Blind XSS scan: OOB callback → {blind_oob_url}", "info")
             cb["on_phase"]("blind_xss", {"oob_url": blind_oob_url})
             blind_targets = list(set(
                 [urlunparse(urlparse(u)._replace(query="", fragment="")) for u in param_urls]
@@ -18283,7 +18297,7 @@ def run_scan(target: str,
     postmessage_dynamic_findings: List[Dict] = []
     if enable_postmessage_scan and not _cancelled.is_set():
       try:
-        cb["on_log"]("postMessage XSS sken...", "info")
+        cb["on_log"]("postMessage XSS scan...", "info")
         cb["on_phase"]("postmessage", {})
 
         # Statická analýza — hledej postMessage listenery na hlavní stránce
@@ -18396,7 +18410,7 @@ def run_scan(target: str,
     template_injection_findings: List[Dict] = []
     if enable_websocket_scan and not _cancelled.is_set():
       try:
-        cb["on_log"]("WebSocket XSS sken...", "info")
+        cb["on_log"]("WebSocket XSS scan...", "info")
         cb["on_phase"]("websocket", {})
 
         # Statická analýza
@@ -18962,7 +18976,7 @@ def run_scan(target: str,
             for f in static_js_findings:
                 sev_counts[f["severity"]] = sev_counts.get(f["severity"], 0) + 1
             cb["on_log"](
-                f"[STATIC-JS] hotovo: {len(static_js_findings)} findings "
+                f"[STATIC-JS] done: {len(static_js_findings)} findings "
                 f"({dict(sev_counts) if sev_counts else 'none'}), "
                 f"{len(external_js_seen)} external JS files analyzed"
                 + (f", {library_count} library-only (Library Audit tab)"
@@ -19475,7 +19489,7 @@ def run_scan(target: str,
                     })
 
             cb["on_log"](
-                f"[PP] hotovo: {len(proto_pollution_findings)} findings "
+                f"[PP] done: {len(proto_pollution_findings)} findings "
                 f"({cve_chains_found} DOMPurify CVE chains, "
                 f"{chains_found} generic chains), "
                 f"{total_sources} sources, {total_gadgets} gadgets, "
@@ -19669,7 +19683,7 @@ def run_scan(target: str,
                     )
 
             cb["on_log"](
-                f"[DC] hotovo: {len(dom_clobbering_findings)} findings "
+                f"[DC] done: {len(dom_clobbering_findings)} findings "
                 f"({chain_count} chains), "
                 f"{sink_total} sinks, {sanitizer_total} sanitizer issues",
                 "info"
@@ -19889,7 +19903,7 @@ def run_scan(target: str,
                 })
 
             cb["on_log"](
-                f"[SSR] hotovo: {len(ssr_hydration_findings)} findings "
+                f"[SSR] done: {len(ssr_hydration_findings)} findings "
                 f"(framework: {framework_detected or 'none'}, "
                 f"{cve_count} CVE, "
                 f"{comment_break_count} comment-break, "
@@ -20072,7 +20086,7 @@ def run_scan(target: str,
                 f"{k}={v}" for k, v in sorted(by_layer_count.items())
             ) or "none"
             cb["on_log"](
-                f"[CSP] hotovo: {total_findings} findings "
+                f"[CSP] done: {total_findings} findings "
                 f"({critical_findings} critical), layers: {layer_summary}"
                 f" → aggregated to {len(csp_aggregation)} unique finding(s)",
                 "info"
@@ -20274,7 +20288,7 @@ def run_scan(target: str,
             for f in trusted_types_findings:
                 sev_counts[f["severity"]] = sev_counts.get(f["severity"], 0) + 1
             cb["on_log"](
-                f"[TT] hotovo: {len(trusted_types_findings)} findings "
+                f"[TT] done: {len(trusted_types_findings)} findings "
                 f"({dict(sev_counts) if sev_counts else 'none'}), "
                 f"{policies_audited} policies audited, "
                 f"{csp_with_tt}/{len(tt_pages_to_check)} pages have TT in the CSP",
@@ -20549,7 +20563,7 @@ def run_scan(target: str,
                 })
 
             cb["on_log"](
-                f"[OPEN-REDIRECT] hotovo: {len(open_redirect_findings)} findings "
+                f"[OPEN-REDIRECT] done: {len(open_redirect_findings)} findings "
                 f"({xss_chain_count} XSS chains, "
                 f"{open_redirect_count} open-redirect-only, "
                 f"{len(static_sinks)} static sinks), "
@@ -20861,7 +20875,7 @@ def run_scan(target: str,
             confirmed_count = sum(1 for f in dom_v6_findings if f["confirmed"])
             chain_count_total = sum(f["chain_count"] for f in dom_v6_findings)
             cb["on_log"](
-                f"[DOM-V6] hotovo: {len(dom_v6_findings)} findings "
+                f"[DOM-V6] done: {len(dom_v6_findings)} findings "
                 f"({confirmed_count} confirmed, {chain_count_total} taint chains)",
                 "info"
             )
@@ -20900,7 +20914,7 @@ def run_scan(target: str,
             and not _cancelled.is_set()
             and _phase_target_alive("HEADLESS")):
         try:
-            cb["on_log"]("Headless DOM verifier (Chromium) startuje...", "info")
+            cb["on_log"]("Headless DOM verifier (Chromium) starting...", "info")
             cb["on_phase"]("headless_verify", {})
 
             # ── Sestavit kandidáty na verifikaci ─────────────────────────
@@ -21270,7 +21284,7 @@ def run_scan(target: str,
             _frag_urls = list(dict.fromkeys([target] + list(pages or [])))
             cb["on_log"](
                 f"[FRAGMENT] hash-based DOM XSS probe: {min(len(_frag_urls),15)} "
-                f"stránek (location.hash → sink)", "info")
+                f"pages (location.hash → sink)", "info")
             with _HV(timeout_s=12.0, framework_wait_ms=1000, screenshot=False) as _fhv:
                 if getattr(_fhv, "available", False):
                     # v10.40: reflected XSS → breakout synth → headless potvrzení.
@@ -21295,8 +21309,8 @@ def run_scan(target: str,
                             _refl_pairs.append((_u, _p))
                         if _refl_pairs:
                             cb["on_log"](
-                                f"[REFLECTED] breakout-synth headless potvrzení: "
-                                f"{min(len(_refl_pairs),15)} (url,param) párů", "info")
+                                f"[REFLECTED] breakout-synth headless confirmation: "
+                                f"{min(len(_refl_pairs),15)} (url,param) pairs", "info")
                         for _u, _p in _refl_pairs[:15]:
                             if _cancelled.is_set():
                                 break
@@ -21528,10 +21542,10 @@ def run_scan(target: str,
                         continue
 
                 cb["on_log"](
-                    f"[STORED-RT] hotovo: {len(stored_roundtrip_findings)} "
+                    f"[STORED-RT] done: {len(stored_roundtrip_findings)} "
                     f"stored XSS findings "
                     f"({sum(1 for f in stored_roundtrip_findings if f['is_admin_context'])} "
-                    f"v admin contextu)",
+                    f"in admin context)",
                     "info"
                 )
 
@@ -21543,7 +21557,7 @@ def run_scan(target: str,
     elif not _STORED_TRACKER_AVAILABLE and stored_roundtrip:
         cb["on_log"](
             "Stored round-trip: module _stored_xss_tracker.py not available "
-            "— preskoceno", "info"
+            "— skipped", "info"
         )
     elif stored_roundtrip and not enable_stored_scan:
         cb["on_log"](
@@ -21675,11 +21689,11 @@ def run_scan(target: str,
                 )
                 _written = _fstore.ingest_report(_report_dict)
                 cb["on_log"](
-                    f"[EVIDENCE] {_written} nálezů uloženo do "
+                    f"[EVIDENCE] {_written} findings saved to "
                     f"{evidence_store_path} (origin={evidence_origin}, "
                     f"scan_id={_fstore.scan_id[:8]})", "info")
             except Exception as _es_err:
-                cb["on_log"](f"[EVIDENCE] store selhal (best-effort): "
+                cb["on_log"](f"[EVIDENCE] store failed (best-effort): "
                              f"{_es_err}", "warn")
         # v10.16: JSON report je volitelný — _report_dict se staví vždy (HTML
         # report ho potřebuje), ale na disk zapíšeme jen když je cesta zadaná.
@@ -21717,8 +21731,8 @@ def run_scan(target: str,
             cb["on_log"](f"Error saving the HTML report: {e}", "error")
     elif html_report and not _HTML_REPORT_AVAILABLE:
         cb["on_log"](
-            "HTML report požadován, ale _html_report.py není dostupný "
-            "(import selhal) — přeskočeno.", "warning")
+            "HTML report requested, but _html_report.py is unavailable "
+            "(import failed) — skipped.", "warning")
 
     # ── SARIF report (v10.17) — standard pro CI/CD (GitHub Code Scanning) ──
     if sarif_report and _SARIF_AVAILABLE and _write_sarif_report is not None:
@@ -21739,8 +21753,8 @@ def run_scan(target: str,
             cb["on_log"](f"Error saving the SARIF report: {e}", "error")
     elif sarif_report and not _SARIF_AVAILABLE:
         cb["on_log"](
-            "SARIF report požadován, ale _sarif_report.py není dostupný "
-            "(import selhal) — přeskočeno.", "warning")
+            "SARIF report requested, but _sarif_report.py is unavailable "
+            "(import failed) — skipped.", "warning")
 
     # ── v10.58: Auto-PoC bundle (bug-bounty-ready) ────────────────────────────
     if poc_report and _POC_AVAILABLE and _write_poc_bundle is not None:
@@ -21763,8 +21777,8 @@ def run_scan(target: str,
             cb["on_log"](f"Error saving the PoC bundle: {e}", "error")
     elif poc_report and not _POC_AVAILABLE:
         cb["on_log"](
-            "PoC bundle požadován, ale _poc_generator.py není dostupný "
-            "(import selhal) — přeskočeno.", "warning")
+            "PoC bundle requested, but _poc_generator.py is unavailable "
+            "(import failed) — skipped.", "warning")
 
     # ── Final emit stats summary ──
     _stats = get_emit_stats()
@@ -21807,7 +21821,7 @@ def run_scan(target: str,
     if _ckpt is not None and not _cancelled.is_set():
         try:
             _ckpt.clear()
-            cb["on_log"]("[RESUME] Sken dokončen — checkpoint smazán.", "info")
+            cb["on_log"]("[RESUME] Scan complete — checkpoint deleted.", "info")
         except Exception:
             pass
 
