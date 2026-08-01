@@ -4,7 +4,7 @@ A sophisticated, modern XSS detection engine for authorized security testing and
 
 It runs as a PyQt5 desktop application — a live attack-surface graph, real-time findings, browser verification, and one-click reports, all from the GUI.
 
-![XSS Grenade — the GUI with its live attack-surface graph and browser-verified findings](assets/screenshot.png)
+![XSS Grenade — the GUI with its live attack-surface graph and browser-verified findings](assets/screenshot.jpg)
 
 > ⚠️ **Authorized use only.** This tool is for testing systems you own or have explicit written permission to test (e.g. an in-scope bug-bounty program or a signed engagement). Unauthorized scanning is illegal in most jurisdictions. You are responsible for how you use it.
 
