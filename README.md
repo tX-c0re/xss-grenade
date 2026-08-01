@@ -19,7 +19,7 @@ It runs as a PyQt5 desktop application — a live attack-surface graph, real-tim
 - **High-value bug-bounty vectors** — `postMessage` handlers with missing/weak `origin` validation, JSONP callback injection, dangling-markup (scriptless, CSP-resistant) injection, and SVG/XML content-type reflection.
 - **Known-CVE library detection** — fingerprints front-end libraries/frameworks (React, Vue, Angular, Next.js, React Router, jQuery, lodash, DOMPurify, …) and flags versions with known XSS/RCE CVEs.
 - **Resilient long scans** — atomic, fingerprinted checkpoints let an interrupted scan resume instead of starting over.
-- **Reporting** — JSON (machine-readable), TXT (quick view), and a self-contained client-ready HTML report with a severity summary, deduplicated findings, and remediation guidance.
+- **Reporting** — one-click **SAVE** exports a machine-readable JSON, a self-contained client-ready HTML report (severity summary, deduplicated findings, remediation), and a PoC bundle.
 
 ---
 
