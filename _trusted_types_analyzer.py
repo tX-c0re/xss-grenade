@@ -5,8 +5,8 @@ Trusted Types policy analyzer — detects insecure CSP Trusted Types config.
 
 Background
 ----------
-Trusted Types (W3C standard, Chrome 83+, Firefox 148+ Feb 2026) is the
-strongest defense against DOM XSS. Apps opt in via CSP:
+Trusted Types (Chromium 83+; other engines have lagged — do not assume it is
+active outside Chromium) is a strong defense against DOM XSS. Apps opt in via CSP:
 
     Content-Security-Policy: require-trusted-types-for 'script';
                              trusted-types myPolicy
@@ -556,19 +556,69 @@ def _is_known_safe_tt_policy(name: str) -> bool:
     return n in _KNOWN_SAFE_TT_POLICY_NAMES
 
 
-def analyze_runtime_tt_policies(policies, page_url: str = ""):
+# Corrected severity matrix (v10.75). A pass-through Trusted Types policy is a
+# CONFIGURATION WEAKNESS, not a confirmed DOM XSS — the runtime probe proves the
+# transformer is a no-op, NOT that any attacker-controlled string reaches a sink
+# through it. So these findings are reported as unconfirmed candidates (fp_risk,
+# verification_required) and NEVER as browser-proven exploits (no dom_verified),
+# with severities keyed on two facts the old model ignored:
+#   * enforced — is `require-trusted-types-for 'script'` ACTUALLY active? If not,
+#     the 'default' policy is never auto-invoked and the "backdoor" is inert:
+#     zero security effect, so we suppress the finding (was the biggest FP).
+#   * default vs named — only the 'default' policy is auto-applied to every sink;
+#     a named policy only matters if the app explicitly routes untrusted input
+#     through it, which the probe cannot confirm → informational.
+# Severities never reach 'critical': that is reserved for a confirmed
+# source→sink flow, which this static/runtime probe does not establish.
+#   key = (transformer, is_default, enforced_true)
+_TT_RUNTIME_SEVERITY = {
+    # createHTML
+    ("createHTML",    True,  True):  "medium",
+    ("createHTML",    True,  False): "low",     # enforcement UNKNOWN (None)
+    ("createHTML",    False, True):  "info",
+    ("createHTML",    False, False): "info",
+    # createScript — eval-equivalent, one notch worse
+    ("createScript",  True,  True):  "high",
+    ("createScript",  True,  False): "medium",
+    ("createScript",  False, True):  "low",
+    ("createScript",  False, False): "low",
+    # createScriptURL — loads arbitrary script
+    ("createScriptURL", True,  True):  "medium",
+    ("createScriptURL", True,  False): "low",
+    ("createScriptURL", False, True):  "info",
+    ("createScriptURL", False, False): "info",
+}
+
+
+def analyze_runtime_tt_policies(policies, page_url: str = "", enforced=None):
     """Turn the runtime `tt_policies` records (from __xssg_state__) into
     engine-standard finding dicts. `policies` is a list of dicts with keys:
     name, passthrough_html, passthrough_script, passthrough_scripturl.
 
-    Severity model (v10.74): ONLY the 'default' policy is auto-applied to EVERY
-    sink on the page, so a pass-through 'default' is a real silent backdoor. A
-    NAMED policy is opt-in — it is only a risk IF the app explicitly routes
-    untrusted input through it, which the runtime probe cannot confirm — so named
-    pass-through policies are INFORMATIONAL, not high. Known-safe vendor policies
-    (goog#html etc.) are suppressed entirely."""
+    `enforced` is a tri-state (True / False / None) — whether the page actually
+    enforces `require-trusted-types-for 'script'`, as detected by the runtime
+    hook (behavioral innerHTML probe + meta-CSP scan).
+
+    Severity model (v10.75 — FP fix). The old model rated a pass-through
+    'default' policy as **critical DOM XSS** and marked it browser-verified.
+    That was wrong on three counts, so it is corrected here:
+      1. A pass-through policy is only a backdoor when TT is ENFORCED. With
+         `enforced is False` the default policy is never auto-invoked, so the
+         finding is SUPPRESSED (returning it was a pure false positive — the
+         page is exactly as (un)protected as one with no Trusted Types at all,
+         which the CSP analyzer itself rates merely 'info').
+      2. Even when enforced, a pass-through policy is a weakened-defense
+         MISCONFIGURATION, not a proven exploit — there is no confirmed
+         source→sink flow — so severity tops out at 'high' (createScript, the
+         eval-equivalent case) and these are flagged fp_risk / verification-
+         required, never 'critical'.
+      3. What the probe DID confirm is only that the transformer is a no-op
+         (`tt_probe_confirmed`), NOT that XSS fires — so the caller must not set
+         dom_verified on these.
+    Known-safe vendor policies (goog#html etc.) are suppressed entirely."""
     out = []
     seen = set()
+    enforced_true = (enforced is True)
     for p in (policies or []):
         try:
             name = str(p.get("name", "?"))
@@ -578,11 +628,24 @@ def analyze_runtime_tt_policies(policies, page_url: str = ""):
             continue
         is_default = (name == "default")
 
-        def _add(kind, sev, why):
+        # Enforcement gate: a pass-through policy on a page that does NOT enforce
+        # `require-trusted-types-for 'script'` has no security effect at all —
+        # the transformer is never on the enforced path. Suppress it.
+        if enforced is False:
+            continue
+
+        enf_note = (
+            "Trusted Types IS enforced on this page (require-trusted-types-for "
+            "'script')." if enforced_true else
+            "NOTE: enforcement of require-trusted-types-for 'script' could not be "
+            "confirmed at runtime — if TT is not actually enforced this is inert.")
+
+        def _add(kind, why):
             key = (name, kind)
             if key in seen:
                 return
             seen.add(key)
+            sev = _TT_RUNTIME_SEVERITY.get((kind, is_default, enforced_true), "info")
             out.append({
                 "url": page_url,
                 "param": "Trusted Types policy '%s'" % name,
@@ -590,40 +653,53 @@ def analyze_runtime_tt_policies(policies, page_url: str = ""):
                 "context": "trusted-types-runtime-%s" % kind.lower(),
                 "source": "trusted-types-runtime",
                 "severity": sev,
-                # v10.74: one finding per (policy,transformer) — a policy created
-                # on N crawled pages must NOT emit N times. Engine dedups on this.
+                # one finding per (policy,transformer) — a policy created on N
+                # crawled pages must NOT emit N times. Engine dedups on this.
                 "dedup_url": "tt:%s:%s" % (name, kind),
-                "cwe_hint": "CWE-79",
+                # CWE-1173 (improper use of validation framework) is the honest
+                # class here — the defect is a neutered sanitization policy. It is
+                # not CWE-79 until an actual injection through it is demonstrated.
+                "cwe_hint": "CWE-1173",
                 "policy": name,
                 "transformer": kind,
+                # Honest confidence signalling — this is a CANDIDATE misconfig,
+                # not a proven exploit. Keeps the scorer/store from treating it
+                # as a browser-confirmed unique-nonce XSS.
+                "tt_probe_confirmed": True,     # what we DID confirm: no-op transformer
+                "verification_required": True,  # exploitability NOT confirmed
+                "fp_risk": True,
+                "fp_reason": ("Trusted Types pass-through policy is a configuration "
+                              "weakness; no attacker-controlled source→sink flow "
+                              "through it was confirmed."),
+                "tt_enforced": enforced,
                 "evidence": (
                     "Runtime probe: policy '%s' %s returned the dangerous probe "
-                    "UNCHANGED — it is a pass-through (no-op) transformer.%s" % (
+                    "UNCHANGED — it is a pass-through (no-op) transformer.%s %s" % (
                         name, kind,
-                        " As the 'default' policy it silently satisfies Trusted "
-                        "Types for every sink on the page." if is_default else "")),
+                        (" As the 'default' policy it is auto-applied to every "
+                         "sink on the page." if is_default else
+                         " This is a NAMED (opt-in) policy — it only matters if "
+                         "the app routes untrusted input through it."),
+                        enf_note)),
                 "description": (
                     "Trusted Types is meant to force all %s sinks through a "
                     "sanitizing policy, but this policy's %s passes input through "
-                    "unchanged (%s). %s Fix the transformer to actually sanitize "
-                    "(e.g. return DOMPurify.sanitize(input)) or remove the "
-                    "pass-through 'default' policy." % (
+                    "unchanged (%s). %s This is a defense-in-depth weakness, not a "
+                    "confirmed injection — verify whether attacker-controlled data "
+                    "can reach a sink via this policy. Fix the transformer to "
+                    "actually sanitize (e.g. return DOMPurify.sanitize(input)) or "
+                    "remove the pass-through 'default' policy." % (
                         kind.replace("create", "").lower(), kind, why,
-                        "Because it is the DEFAULT policy, it is a silent backdoor "
-                        "that neutralizes Trusted Types protection everywhere."
+                        "As the DEFAULT policy it neutralizes Trusted Types "
+                        "protection for every sink on the page."
                         if is_default else
-                        "Any sink using this policy is unprotected.")),
+                        "Any sink that uses this named policy is unprotected.")),
             })
 
         if p.get("passthrough_html") is True:
-            _add("createHTML", "critical" if is_default else "info",
-                 "an <img onerror> probe survived intact")
+            _add("createHTML", "an <img onerror> probe survived intact")
         if p.get("passthrough_script") is True:
-            # createScript passthrough is eval-equivalent — worse than HTML — so a
-            # named one is 'low' (still unconfirmed) rather than 'info'.
-            _add("createScript", "critical" if is_default else "low",
-                 "a script-body probe survived intact → eval-equivalent")
+            _add("createScript", "a script-body probe survived intact → eval-equivalent")
         if p.get("passthrough_scripturl") is True:
-            _add("createScriptURL", "high" if is_default else "info",
-                 "an arbitrary script URL survived intact → loads any script")
+            _add("createScriptURL", "an arbitrary script URL survived intact → loads any script")
     return out

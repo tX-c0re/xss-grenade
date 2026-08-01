@@ -120,6 +120,7 @@ class DOMFinding:
     csp_violations: List[Dict] = field(default_factory=list)
     page_errors: List[Dict] = field(default_factory=list)
     tt_policies: List[Dict] = field(default_factory=list)  # runtime Trusted Types policy probes
+    tt_enforced: Optional[bool] = None  # was require-trusted-types-for 'script' actually enforced on this load? (tri-state)
     interactions_done: int = 0
     elapsed_ms: int = 0
     error: str = ""
@@ -177,6 +178,17 @@ class ScanResult:
     @property
     def total_sources(self) -> int:
         return sum(len(f.source_reads) for f in self.findings)
+
+    @property
+    def tt_enforced(self) -> Optional[bool]:
+        """Page-level Trusted Types enforcement, folded across all loads of this
+        page. True if ANY load observed require-trusted-types-for 'script' active;
+        False if every load explicitly reported it inactive; None if unknown
+        (e.g. older hook that did not probe)."""
+        vals = [f.tt_enforced for f in self.findings if f.tt_enforced is not None]
+        if not vals:
+            return None
+        return True if any(v is True for v in vals) else False
 
 
 # ──────────────────────────────────────────────────────────────────────────────
@@ -630,6 +642,13 @@ class DOMV6Verifier:
                         f.tt_policies.append(dict(tp))
                     except Exception:
                         continue
+                # Trusted Types enforcement signal (tri-state). Kept separate so
+                # the runtime policy audit can tell an ACTIVE 'default' backdoor
+                # from an inert pass-through policy on a page that never enforces
+                # require-trusted-types-for 'script'.
+                _tt_enf = state.get("tt_enforced", None)
+                if _tt_enf is True or _tt_enf is False:
+                    f.tt_enforced = _tt_enf
 
                 f.triggered = bool(state.get("triggered", False))
                 f.triggered_by = str(state.get("triggered_by") or "")

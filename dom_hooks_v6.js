@@ -31,6 +31,8 @@
         csp_violations: [],
         interactions_done: 0,   // kolik click/hover/etc. jsme provedli
         tt_policies: [],        // Trusted Types policies registered at runtime + pass-through probe
+        tt_enforced: null,      // tri-state: true/false/null — is require-trusted-types-for 'script' actually enforced?
+        tt_enforce_signal: "none", // how we decided: "behavioral" | "meta" | "none"
     };
 
     var S = window.__xssg_state__;
@@ -167,6 +169,52 @@
     // the policy is a pass-through (a no-op sanitizer). A pass-through 'default'
     // policy is a silent backdoor: it satisfies Trusted Types enforcement for
     // EVERY sink on the page while sanitizing nothing.
+    //
+    // ...BUT a pass-through 'default' policy is only a backdoor if
+    // `require-trusted-types-for 'script'` is ACTUALLY ENFORCED. Without
+    // enforcement the default policy is never auto-invoked, so the "backdoor"
+    // is inert and reporting it is a false positive. Detect enforcement here so
+    // the Python side can gate/severity-scale on it:
+    //   (1) BEHAVIORAL — at document_start (before any page script can register
+    //       a 'default' policy) a raw string assigned to innerHTML THROWS iff
+    //       enforcement is active via a header CSP. This is unambiguous: no
+    //       default policy exists yet to swallow the throw. (Report-Only does
+    //       NOT throw → correctly read as not-enforced: it never blocks anyone.)
+    //   (2) META — a <meta http-equiv="Content-Security-Policy"> carrying
+    //       `require-trusted-types-for 'script'` is applied mid-parse, after this
+    //       init script runs, so re-check it on DOMContentLoaded.
+    try {
+        if (window.trustedTypes) {
+            try {
+                var _ttProbe = document.createElement('div');
+                _ttProbe.innerHTML = 'xssg_tt_enforce_probe';   // native setter — not yet hooked
+                // no throw → header CSP does not enforce TT for 'script'
+                S.tt_enforced = false;
+            } catch (_ttErr) {
+                S.tt_enforced = true;
+                S.tt_enforce_signal = "behavioral";
+            }
+        }
+    } catch (e) { }
+    function _xssgScanMetaCSPForTT() {
+        try {
+            var metas = document.querySelectorAll('meta[http-equiv]');
+            for (var i = 0; i < metas.length; i++) {
+                var he = (metas[i].getAttribute('http-equiv') || '').toLowerCase();
+                if (he !== 'content-security-policy') continue;   // report-only meta is ignored by browsers
+                var c = (metas[i].getAttribute('content') || '').toLowerCase();
+                if (c.indexOf('require-trusted-types-for') !== -1 &&
+                    c.indexOf('script') !== -1) {
+                    if (S.tt_enforced !== true) S.tt_enforce_signal = "meta";
+                    S.tt_enforced = true;
+                    return;
+                }
+            }
+        } catch (e) { }
+    }
+    try { document.addEventListener('DOMContentLoaded', _xssgScanMetaCSPForTT); } catch (e) { }
+    try { _xssgScanMetaCSPForTT(); } catch (e) { }
+
     try {
         var _TT = window.trustedTypes;
         if (_TT && typeof _TT.createPolicy === 'function') {

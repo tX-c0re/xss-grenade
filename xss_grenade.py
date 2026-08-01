@@ -15705,10 +15705,17 @@ def run_scan(target: str,
     # pages got no DOM analysis at all and the report never mentioned it, which
     # reads as "clean" when it means "not looked at". Default raised to 60 and
     # overridable for deep runs; the phase logs a warning whenever it binds.
-    def _dom_v6_page_cap() -> int:
+    # v10.75: XSSG_DOM_V6_MAX_PAGES=0 (or 'unlimited'/'none'/'all') removes the
+    # cap entirely — every crawled page gets DOM analysis. That is still bounded
+    # from above by the crawler's max_pages budget (default 200), it is not
+    # infinite; but on a big SPA site it can add minutes, so it stays opt-in.
+    def _dom_v6_page_cap() -> Optional[int]:
+        raw = (os.environ.get("XSSG_DOM_V6_MAX_PAGES", "") or "").strip().lower()
+        if raw in ("0", "-1", "unlimited", "none", "all", "inf", "infinite"):
+            return None   # None => no cap (analyze every crawled page)
         try:
-            v = int(os.environ.get("XSSG_DOM_V6_MAX_PAGES", "") or 60)
-            return max(1, v)
+            v = int(raw or 60)
+            return None if v <= 0 else max(1, v)
         except (TypeError, ValueError):
             return 60
 
@@ -20630,7 +20637,8 @@ def run_scan(target: str,
                     continue
                 v6_pages_seen.add(ne)
                 v6_pages_to_check.append(u)
-                if len(v6_pages_to_check) >= MAX_DOM_V6_PAGES:
+                if (MAX_DOM_V6_PAGES is not None
+                        and len(v6_pages_to_check) >= MAX_DOM_V6_PAGES):
                     break
 
             cb["on_log"](
@@ -20639,14 +20647,25 @@ def run_scan(target: str,
             )
             # v10.86: never let the cap silently truncate coverage. An unscanned
             # page is not a clean page, and the report must not imply otherwise.
+            # v10.75: gate the warning on the cap ACTUALLY binding (not on dedup
+            # shrinking the list), and stay silent about a "None" cap when the
+            # cap is disabled.
             _v6_total_candidates = 1 + len(pages or [])
-            if _v6_total_candidates > len(v6_pages_to_check):
+            _v6_cap_bound = (MAX_DOM_V6_PAGES is not None
+                             and len(v6_pages_to_check) >= MAX_DOM_V6_PAGES)
+            if _v6_cap_bound and _v6_total_candidates > len(v6_pages_to_check):
                 _v6_skipped = _v6_total_candidates - len(v6_pages_to_check)
                 cb["on_log"](
                     f"[DOM-V6] ⚠ page cap {MAX_DOM_V6_PAGES} reached — "
                     f"{_v6_skipped} discovered page(s) got NO DOM analysis and are "
                     f"NOT covered by this scan. Raise XSSG_DOM_V6_MAX_PAGES to go deeper.",
                     "warn"
+                )
+            elif MAX_DOM_V6_PAGES is None:
+                cb["on_log"](
+                    "[DOM-V6] page cap disabled (XSSG_DOM_V6_MAX_PAGES=unlimited) — "
+                    f"analyzing every crawled page ({len(v6_pages_to_check)}).",
+                    "info"
                 )
 
             # SPAs need longer hydration time — Angular/React/Vue need to
@@ -20781,6 +20800,15 @@ def run_scan(target: str,
                             # injected hook probed every registered policy; a
                             # pass-through transformer (esp. the 'default' policy)
                             # is a silent TT backdoor static analysis can't see.
+                            #
+                            # v10.75 FP fix: the probe proves the transformer is a
+                            # NO-OP — not that XSS fires through it. So (a) gate on
+                            # whether require-trusted-types-for 'script' is really
+                            # enforced (an unenforced pass-through policy is inert
+                            # and was a pure FP), and (b) do NOT set dom_verified:
+                            # that flag means "Chromium executed our payload" and
+                            # makes the scorer/store treat the finding as a proven
+                            # unique-nonce XSS (+0.50 confidence, fp_risk cleared).
                             try:
                                 _tt_all = []
                                 for _f6 in scan.findings:
@@ -20788,26 +20816,38 @@ def run_scan(target: str,
                                 if _tt_all:
                                     from _trusted_types_analyzer import (
                                         analyze_runtime_tt_policies as _tt_rt)
-                                    for _ttf in _tt_rt(_tt_all, page_url):
+                                    _tt_enf = getattr(scan, "tt_enforced", None)
+                                    for _ttf in _tt_rt(_tt_all, page_url,
+                                                       enforced=_tt_enf):
                                         _emit_hit(cb, {
                                             "url":      _ttf["url"] or page_url,
                                             "param":    _ttf["param"],
                                             "context":  _ttf["context"],
                                             "csp_note": "",
-                                            "status":   "DOM",
+                                            "status":   "TT-RUNTIME",
                                             "source":   _ttf["source"],
                                             "payload":  _ttf["payload"],
                                             "severity": _ttf["severity"],
                                             # v10.74: collapse the same policy across
                                             # all crawled pages to ONE finding.
                                             "dedup_url": _ttf.get("dedup_url"),
-                                            "dom_verified": True,
+                                            # Honest confidence: no confirmed
+                                            # source→sink flow through the policy.
+                                            "verification_required": True,
+                                            "fp_risk": True,
+                                            "fp_reason": _ttf.get("fp_reason", ""),
+                                            "tt_probe_confirmed": True,
+                                            "tt_enforced": _tt_enf,
+                                            "evidence": _ttf.get("evidence", ""),
+                                            "description": _ttf.get("description", ""),
+                                            "cwe_hint": _ttf.get("cwe_hint", ""),
                                             "tt_runtime_finding": _ttf,
                                         })
                                         cb["on_log"](
                                             f"[TT-RUNTIME] pass-through policy "
                                             f"'{_ttf['policy']}' {_ttf['transformer']} "
-                                            f"({_ttf['severity']}) on {page_url[:70]}",
+                                            f"({_ttf['severity']}, enforced={_tt_enf}) "
+                                            f"on {page_url[:70]}",
                                             "warning")
                             except Exception as _tte:
                                 logging.debug(f"[TT-RUNTIME] audit failed {page_url}: {_tte}")
