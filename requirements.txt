@@ -8,7 +8,7 @@
 # ── Core (required) ───────────────────────────────────────────────────────────
 requests>=2.28.0            # HTTP client used by the crawler and all scanners
 beautifulsoup4>=4.11.0      # HTML parsing / link + form extraction (the `bs4` import)
-alive-progress>=3.0.0       # CLI progress bars during scanning
+alive-progress>=3.0.0       # progress bars used by the scan engine
 
 # ── Static JS analysis (strongly recommended) ────────────────────────────────
 # Without esprima the AST-based phases (DOM XSS taint, template injection,
@@ -21,9 +21,8 @@ esprima>=4.0.1              # JavaScript AST parser
 # After installing, run:  playwright install chromium
 playwright>=1.40.0
 
-# ── GUI (optional) ────────────────────────────────────────────────────────────
-# Only needed for the graphical interface (xss_grenade_gui.py). The CLI
-# (xss_grenade.py) works without it.
+# ── GUI (required) ────────────────────────────────────────────────────────────
+# XSS Grenade runs as a graphical desktop application (xss_grenade_gui.py).
 PyQt5>=5.15.0
 
 # ── Advanced TLS / fingerprint evasion (optional) ─────────────────────────────

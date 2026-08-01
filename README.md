@@ -2,7 +2,7 @@
 
 A sophisticated, modern XSS detection engine for authorized security testing and bug-bounty research. XSS Grenade goes well beyond reflected-payload fuzzing: it does context-aware injection, real-browser headless verification to cut false positives, static JavaScript taint analysis, and detection of modern client-side vulnerability classes (DOM XSS, mutation XSS, prototype pollution, DOM clobbering, Trusted Types misconfig, SSR hydration issues, and known-CVE libraries).
 
-It ships with both a command-line interface and a PyQt5 graphical interface.
+It runs as a PyQt5 desktop application — a live attack-surface graph, real-time findings, browser verification, and one-click reports, all from the GUI.
 
 ![XSS Grenade — the GUI with its live attack-surface graph and browser-verified findings](assets/screenshot.png)
 
@@ -26,11 +26,11 @@ It ships with both a command-line interface and a PyQt5 graphical interface.
 ## Requirements
 
 - **Python 3.8+**
-- Core packages: `requests`, `beautifulsoup4`, `alive-progress`
-- Recommended: `esprima` (static JS analysis), `playwright` + Chromium (headless verification)
-- Optional: `PyQt5` (GUI), `curl_cffi` (TLS fingerprint evasion)
+- Required: `PyQt5` (the GUI), `requests`, `beautifulsoup4`, `alive-progress`
+- Strongly recommended: `esprima` (static JS analysis), `playwright` + Chromium (headless verification)
+- Optional: `curl_cffi` (TLS fingerprint evasion)
 
-All optional dependencies degrade gracefully — if one is missing, the related feature is disabled and the rest of the tool keeps working.
+The recommended/optional dependencies degrade gracefully — if one is missing, the related detection feature is disabled and the rest of the tool keeps working. `pip install -r requirements.txt` installs everything.
 
 ---
 
@@ -56,42 +56,28 @@ playwright install chromium
 
 ## Quick start
 
-### Command line
-
-```bash
-# Basic scan (crawl + context-aware reflected XSS)
-python xss_grenade.py --target https://example.com
-
-# Crawl deeper and write a JSON + HTML report
-python xss_grenade.py --target https://example.com \
-    --crawl-depth 2 \
-    --json-report report.json \
-    --html-report report.html
-
-# Confirm findings in a real browser to reduce false positives
-python xss_grenade.py --target https://example.com --headless-verify
-
-# Enable extra high-value detection modules
-python xss_grenade.py --target https://example.com \
-    --static-js --postmessage --proto-pollution \
-    --jsonp-scan --dangling-scan --svg-scan
-```
-
-### Graphical interface
+Launch the app:
 
 ```bash
 python xss_grenade_gui.py
 ```
 
-The GUI exposes the same scan options as checkboxes, shows live progress and findings, and can load a saved JSON report.
+Then:
+
+1. Enter a **target URL** you are authorized to test.
+2. Pick the detection modules you want in the **Settings** tab (context-aware reflected XSS and crawling are on by default).
+3. Press **RUN** — watch the live attack-surface graph and real-time findings.
+4. Press **SAVE** to export a JSON + HTML report and a self-contained PoC bundle.
+
+Findings are confirmed in a real browser, so the results are exploitable issues, not noise.
 
 ---
 
 ## Detection modules
 
-XSS Grenade runs a pipeline of phases. Reflected/context-aware XSS and crawling are on by default; the rest are opt-in flags so you only pay for what you need.
+XSS Grenade runs a pipeline of phases. Reflected/context-aware XSS and crawling are on by default; the rest are opt-in toggles in the **Settings** tab, so you only pay for what you need.
 
-| Area | Phase / flag | What it does |
+| Area | Phase / toggle | What it does |
 |------|--------------|--------------|
 | Crawl | `crawl` (default) | Discovers URLs, query params, forms, JSON bodies, and REST/SPA endpoints from JS bundles. |
 | Reflected XSS | `context` (default) | Context-aware payloads per reflection point (HTML/attr/URL/JS/style), incl. multiple contexts. |
@@ -114,45 +100,24 @@ XSS Grenade runs a pipeline of phases. Reflected/context-aware XSS and crawling 
 | WebSocket | `--websocket` | WebSocket message-injection XSS. |
 | Headers / CORS | `--headers`, CORS/CRLF/XSSI | Header-reflected XSS, CORS misconfig, CRLF, XSSI. |
 
-Run `python xss_grenade.py --help` for the authoritative, up-to-date flag list.
-
----
-
-## Common options
-
-```text
---target URL              Target to scan (required)
---crawl-depth N           Crawl depth (default shallow; increase to find more URLs)
---crawl-max-pages N       Cap the number of crawled pages
---thread N                Worker threads (clamped 1–500)
---timeout SECS            Per-request timeout
---headless-verify         Verify findings in a real browser (Playwright/Chromium)
---json-report FILE        Write a machine-readable JSON report (deduplicated findings + summary)
---html-report FILE        Write a self-contained, client-ready HTML report
---report FILE             Write a plain-text report
---checkpoint FILE         Save scan state for resume
---resume                  Resume from a matching --checkpoint
---proxy URL               Route traffic through an HTTP proxy (e.g. Burp)
---rotate-ua / --ua-file   User-agent rotation
---verbose                 Debug logging (shows internally swallowed errors with context)
-```
-
-Run `python xss_grenade.py --help` for the full list (auth config, Tor isolation, scan intensity, destructive-mode safeguards, etc.).
+Every module above is a checkbox in the GUI's **Settings** tab, with a plain-English explanation in the **HELP** tab.
 
 ---
 
 ## Reports
 
-- **JSON** (`--json-report`) — `findings` (confirmed, deduplicated), a `summary` block with a severity breakdown, plus per-category structured findings. Ideal for tooling/pipelines.
-- **HTML** (`--html-report`) — a single self-contained file (inline CSS, no external assets) with a severity summary, findings grouped critical-first, per-context remediation, and a vulnerable-library table. All values are HTML-escaped, so the report opens safely even when it contains live payloads.
-- **TXT** (`--report`) — a quick human-readable summary.
+The **SAVE** button writes a report bundle to a folder of your choice, anytime — even mid-scan or after a stop, so findings are never lost:
+
+- **JSON** — `findings` (confirmed, deduplicated), a `summary` block with a severity breakdown, plus per-category structured findings. Ideal for tooling.
+- **HTML** — a single self-contained file (inline CSS, no external assets) with a severity summary, findings grouped critical-first, per-context remediation, and a vulnerable-library table. All values are HTML-escaped, so the report opens safely even when it contains live payloads.
+- **PoC bundle** — a self-contained, inert proof-of-concept page for each confirmed finding.
 
 ---
 
 ## Safety notes
 
-- **Destructive mode** (`--destructive`) is gated behind explicit confirmation and is off by default. Only use it where you have permission to trigger state-changing actions.
-- **SSRF scanning** (`--ssrf-scan`) is opt-in for the same reason.
+- **Destructive mode** is gated behind explicit confirmation and is off by default. Only use it where you have permission to trigger state-changing actions.
+- **SSRF scanning** is opt-in for the same reason.
 - The tool follows a single dedup + verification chokepoint before reporting, so the same issue across many URLs collapses to one finding.
 
 ---
@@ -160,7 +125,7 @@ Run `python xss_grenade.py --help` for the full list (auth config, Tor isolation
 ## Project layout
 
 ```
-xss_grenade.py            # Core engine + CLI (scan pipeline, phases, reporting)
+xss_grenade.py            # Core scan engine (pipeline, phases, reporting)
 xss_grenade_gui.py        # PyQt5 graphical interface
 context_engine.py         # Reflection-context classification
 _static_js_analyzer.py    # JavaScript AST taint analysis
