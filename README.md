@@ -38,7 +38,7 @@ All optional dependencies degrade gracefully — if one is missing, the related 
 
 ```bash
 # 1. Clone
-git clone https://github.com/<your-username>/xss-grenade.git
+git clone https://github.com/tX-c0re/xss-grenade.git
 cd xss-grenade
 
 # 2. (Recommended) create a virtual environment
