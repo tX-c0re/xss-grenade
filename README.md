@@ -72,7 +72,7 @@ source venv/bin/activate        # Windows: venv\Scripts\activate
 pip install -r requirements.txt
 
 # (recommended) Chromium for headless verification
-playwright install chromium
+python -m playwright install chromium
 ```
 
 ---
