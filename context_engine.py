@@ -171,6 +171,11 @@ class Evidence:
     snippet_after:      str = ""                      # ≤ 80 chars after marker
     parser_used:        str = "none"                  # "tree_sitter" | "bs4" | "regex"
     js_parser_used:     Optional[str] = None          # "esprima" | "tree_sitter" | None
+    # True when the reflection sits MID-VALUE inside a QUOTED url attribute
+    # (e.g. a query param reflected into href="?...&p=HERE"). There the scheme
+    # slot is already taken, so the exploit is a QUOTE breakout, not scheme
+    # injection — _compute_breakout requires the quote char instead of ':'.
+    url_quote_breakout: bool = False
     notes:              List[str] = field(default_factory=list)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -291,7 +296,16 @@ def _compute_breakout(ctx: Context, sub: SubContext,
         if sub == SubContext.ATTR_EVENT_HANDLER:
             need = set()                                 # direct JS eval
         elif sub == SubContext.ATTR_URL:
-            need = {":"}                                 # "javascript:" scheme
+            # A URL attribute is attacked two ways:
+            #  - scheme injection at the value START (javascript:/data:) → needs ':'
+            #  - quote breakout anywhere in a QUOTED value — the ONLY vector when the
+            #    reflection is mid-URL (e.g. a query param inside href="?...&p=HERE"),
+            #    where the scheme slot is already occupied. `url_quote_breakout` is set
+            #    by the URL refinement (_engine.analyze) for exactly that case.
+            if getattr(evidence, "url_quote_breakout", False) and q in ('"', "'"):
+                need = {q}                               # must close the quote to inject
+            else:
+                need = {":"}                             # "javascript:" scheme
         elif sub == SubContext.ATTR_STYLE:
             need = {":", "(", ")"}                       # expression() / url()
     elif ctx == Context.JS:

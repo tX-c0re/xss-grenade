@@ -388,6 +388,64 @@ _RE_ATTR_NEAR    = re.compile(
     r'(?P<name>[a-zA-Z_:][\w:.\-]*)\s*=\s*(?P<q>["\']?)', re.I)
 
 
+def _enclosing_attr_state(tag_content: str):
+    """Walk a start-tag's text (from '<tag' up to the marker) respecting quotes,
+    and return the attribute whose VALUE contains the marker.
+
+    Returns (attr_name, quote_char, value_start_rel):
+      attr_name       lower-cased attribute name, or None if the marker sits at an
+                      attribute-NAME position (between attributes) not inside a value
+      quote_char      '"' / "'" if the marker is inside a quoted value; None if unquoted
+      value_start_rel index within tag_content where the value begins (just after the
+                      opening quote for quoted values), or None
+
+    Why this exists: the naive "last  name=  before the marker" approach is wrong for
+    URL attributes. A value like  href="?a=1&serazeni=MARKER"  contains  &serazeni=
+    which LOOKS like an attribute assignment, so the marker was mis-classified as an
+    *unquoted* attribute named 'serazeni' (wrong severity + wrong breakout char) and the
+    reflected XSS was missed. Tracking quotes fixes it: once inside  href="  the value
+    runs to the closing  "  , so the enclosing attribute is correctly 'href' (quoted)."""
+    n = len(tag_content)
+    m = re.match(r"<[a-zA-Z][\w:-]*", tag_content)
+    i = m.end() if m else 0
+    while i < n:
+        while i < n and tag_content[i] in " \t\r\n/":
+            i += 1
+        if i >= n:
+            return (None, None, None)              # marker at attribute-name position
+        nm = re.match(r"[^\s=/>]+", tag_content[i:])
+        if not nm:
+            i += 1
+            continue
+        name = nm.group(0).lower()
+        i += nm.end()
+        while i < n and tag_content[i] in " \t\r\n":
+            i += 1
+        if i < n and tag_content[i] == "=":
+            i += 1
+            while i < n and tag_content[i] in " \t\r\n":
+                i += 1
+            if i >= n:
+                return (name, None, i)             # marker at start of unquoted value
+            ch = tag_content[i]
+            if ch in ('"', "'"):
+                vstart = i + 1
+                end = tag_content.find(ch, vstart)
+                if end == -1:
+                    return (name, ch, vstart)      # quote unterminated → marker INSIDE value
+                i = end + 1                          # value closed before marker; keep scanning
+            else:
+                vstart = i
+                vm = re.match(r"[^\s>]*", tag_content[i:])
+                i += vm.end() if vm else 0
+                if i >= n:
+                    return (name, None, vstart)    # marker in unquoted value
+        else:
+            if i >= n:
+                return (None, None, None)          # boolean attr, marker at name position
+    return (None, None, None)
+
+
 def _regex_fallback(body: str, marker_offset: int) -> _HtmlLocation:
     """Crude but always-works classifier."""
     loc = _HtmlLocation(parser_used="regex")
@@ -430,24 +488,29 @@ def _regex_fallback(body: str, marker_offset: int) -> _HtmlLocation:
             loc.container_end = next_c
             return loc
 
-    # In attribute? Look left for `name="...` without an intervening `>`
+    # In attribute? Walk the enclosing tag RESPECTING QUOTES so a reflection deep
+    # inside a URL value (href="?a=1&p=HERE") is attributed to the real enclosing
+    # attribute ('href', quoted) instead of the last query-param name it happens to
+    # follow. Fixes missed reflected XSS in href/src attributes when tree-sitter is
+    # unavailable (the default regex path).
     tag_start = body.rfind("<", 0, marker_offset)
     tag_end = body.find(">", marker_offset)
     if tag_start != -1 and tag_end != -1 and tag_end > marker_offset:
         tag_content = body[tag_start:marker_offset]
-        # Find the last attr= before marker
-        last_attr = None
-        for m in _RE_ATTR_NEAR.finditer(tag_content):
-            last_attr = m
-        if last_attr is not None:
-            attr_name = last_attr.group("name").lower()
-            quote = last_attr.group("q") or None
+        attr_name, quote, vstart_rel = _enclosing_attr_state(tag_content)
+        if attr_name is not None:
             loc.context = Context.HTML_ATTR
             loc.attribute_name = attr_name
             loc.quote_char = quote
-            loc.sub_context = _classify_attr_subcontext(
-                attr_name, quote, None)
-            # Also grab the enclosing element tag
+            loc.sub_context = _classify_attr_subcontext(attr_name, quote, None)
+            # For a quoted value, expose the value span so the URL refinement in
+            # _engine.analyze() can run (it needs container_start >= 0) and so a
+            # mid-value href/src reflection is scored as a quote-breakout XSS.
+            if quote is not None and vstart_rel is not None:
+                cend = body.find(quote, marker_offset)
+                if cend != -1:
+                    loc.container_start = tag_start + vstart_rel
+                    loc.container_end = cend
             tm = re.match(r"<([a-zA-Z][\w:-]*)", body[tag_start:tag_start + 50])
             if tm:
                 loc.element_tag = tm.group(1).lower()

@@ -16,6 +16,16 @@ alive-progress>=3.0.0       # progress bars used by the scan engine
 # degrade gracefully but lose a lot of detection power.
 esprima>=4.0.1              # JavaScript AST parser
 
+# ── Accurate HTML reflection-context classification (strongly recommended) ────
+# Without tree-sitter, _html_analyzer.analyze_html() falls back to a REGEX
+# classifier that mis-reads reflections inside URL attributes — e.g. a query
+# param reflected into href="?...&p=HERE" gets classified as an *unquoted*
+# attribute (wrong severity + wrong breakout char), so real reflected XSS in
+# href/src attributes is missed. The tree-sitter parser classifies these
+# correctly. Install both the runtime and the HTML grammar.
+tree-sitter>=0.21.0        # incremental parser runtime
+tree-sitter-html>=0.20.0   # HTML grammar for the reflection-context engine
+
 # ── Headless verification (optional, recommended) ─────────────────────────────
 # Used to confirm findings in a real browser (Chromium) and cut false positives.
 # After installing, run:  python -m playwright install chromium

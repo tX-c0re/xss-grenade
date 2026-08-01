@@ -352,6 +352,14 @@ def analyze(body: str,
             else:
                 # Keep ATTR_URL but annotate
                 ev.notes.append(f"url_sub={url_sub.value}")
+                # Mid-URL-value reflection inside a QUOTED url attribute (the
+                # scheme slot is already taken, e.g. href="?...&p=HERE"): the
+                # only vector is a QUOTE breakout, so tell _compute_breakout to
+                # require the quote char rather than ':' (which no mid-value
+                # reflection can satisfy). Scheme-position reflections keep ':'.
+                if html_loc.quote_char in ('"', "'") and local_off > 0:
+                    ev.url_quote_breakout = True
+                    ev.notes.append("url_midvalue_quote_breakout")
 
         # ─── 5. Compute breakout requirement + severity ───────────────────────
         ctx_obj.breakout_required = _compute_breakout(
