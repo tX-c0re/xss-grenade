@@ -1,0 +1,64 @@
+# ─── Sensitive: real scan artifacts (NEVER commit — contain findings on real targets) ───
+*.ckpt
+.xsgckpt*
+xssgrenade_*.ckpt
+xss_report.*
+xssgrenade_findings_*
+xss_crash.log
+xss_debug_gui.log
+*.sarif
+poc_bundle/
+*.poc.html
+# manually-exported PoC/report HTML against real targets (had rkclar.html = rkclaris.cz PoC)
+rkclar.html
+# per-run evidence logs + benchmark run outputs (localhost, regenerable — noise, not source)
+*_evidence.jsonl
+evidence_store.jsonl
+bench_firingrange/fr_result*.json
+bench_firingrange/diag_ev.jsonl
+bench_firingrange/__pycache__/
+
+# ─── Build / packaging output ───
+build/
+dist/
+*.spec
+*.egg-info/
+*.egg
+
+# ─── Python ───
+__pycache__/
+*.py[cod]
+*$py.class
+.Python
+.venv/
+venv/
+env/
+ENV/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# ─── Playwright / browsers ───
+.cache/
+ms-playwright/
+
+# ─── OS / editor ───
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/
+*.swp
+*~
+
+# ─── Logs / temp ───
+*.log
+tmp/
+temp/
+scratch/
+
+# my temp artifacts
+smoke_stderr.txt
+_fp_audit_tmp.py
