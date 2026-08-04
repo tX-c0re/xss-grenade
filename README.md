@@ -1,16 +1,6 @@
-```
-▒██   ██▒  ██████   ██████      ▄████  ██▀███  ▓█████  ███▄    █  ▄▄▄      ▓█████▄ ▓█████ 
-▒▒ █ █ ▒░▒██    ▒ ▒██    ▒     ██▒ ▀█▒▓██ ▒ ██▒▓█   ▀  ██ ▀█   █ ▒████▄    ▒██▀ ██▌▓█   ▀ 
-░░  █   ░░ ▓██▄   ░ ▓██▄      ▒██░▄▄▄░▓██ ░▄█ ▒▒███   ▓██  ▀█ ██▒▒██  ▀█▄  ░██   █▌▒███   
- ░ █ █ ▒   ▒   ██▒  ▒   ██▒   ░▓█  ██▓▒██▀▀█▄  ▒▓█  ▄ ▓██▒  ▐▌██▒░██▄▄▄▄██ ░▓█▄   ▌▒▓█  ▄ 
-▒██▒ ▒██▒▒██████▒▒▒██████▒▒   ░▒▓███▀▒░██▓ ▒██▒░▒████▒▒██░   ▓██░ ▓█   ▓██▒░▒████▓ ░▒████▒
-▒▒ ░ ░▓ ░▒ ▒▓▒ ▒ ░▒ ▒▓▒ ▒ ░    ░▒   ▒ ░ ▒▓ ░▒▓░░░ ▒░ ░░ ▒░   ▒ ▒  ▒▒   ▓▒█░ ▒▒▓  ▒ ░░ ▒░ ░
-░░   ░▒ ░░ ░▒  ░ ░░ ░▒  ░ ░     ░   ░   ░▒ ░ ▒░ ░ ░  ░░ ░░   ░ ▒░  ▒   ▒▒ ░ ░ ▒  ▒  ░ ░  ░
- ░    ░  ░  ░  ░  ░  ░  ░     ░ ░   ░   ░░   ░    ░      ░   ░ ░   ░   ▒    ░ ░  ░    ░   
- ░    ░        ░        ░           ░    ░        ░  ░         ░       ░  ░   ░       ░  ░
-                                                                            ░             
-                     B r o w s e r - v e r i f i e d   X S S   ·   T X - C 0 R E
-```
+<p align="center">
+  <img src="assets/xss_grenade.png" alt="XSS Grenade — automated XSS vulnerability scanner" width="860">
+</p>
 
 ![License: GPLv3](https://img.shields.io/badge/License-GPLv3-c0392b?style=flat-square)
 ![Python 3.8+](https://img.shields.io/badge/Python-3.8%2B-1f6feb?style=flat-square&logo=python&logoColor=white)
