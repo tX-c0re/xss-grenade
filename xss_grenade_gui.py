@@ -20,6 +20,7 @@ from PyQt5.QtWidgets import (
     QGroupBox, QScrollArea,
     QDialog, QPlainTextEdit, QSizePolicy,
     QMessageBox, QComboBox,
+    QStyledItemDelegate, QStyle, QMenu,
 )
 from PyQt5.QtCore import QThread, pyqtSignal, Qt, QTimer, QPointF, QRectF, QSettings
 from PyQt5.QtGui import (
@@ -70,6 +71,139 @@ COL_TEXT_ONLY = QColor("#64748b")     # gray — informational reflection
 COL_HIT_LEGACY = QColor("#10b981")    # green — legacy "hit" w/o gate info
 
 COL_WAF       = QColor("#fbbf24")     # amber — WAF blocked
+
+# Legend / 3-state scheme (matches the bottom-left key in the graph):
+COL_DISCOVERED = COL_PARAM             # gray  — endpoint/param discovered, not yet a hit
+COL_CRAWLED    = QColor("#10b981")     # green — page successfully crawled
+COL_VULN       = COL_XSS_EXEC          # red   — vulnerable (confirmed finding)
+
+
+# ── Severity ordering + badge rendering for the FINDINGS table ────────────────
+# DOM findings rank first, then by severity high→low. Higher number = higher up.
+_SEV_SCORE = {"critical": 5, "high": 4, "medium": 3, "low": 2, "info": 1}
+# tier → (fill, border, text) — a red-graded palette so the whole column reads red.
+_SEV_BADGE_COLORS = {
+    "critical": ("#7f1d1d", "#f87171", "#fecaca"),
+    "high":     ("#7f1d1d", "#ef4444", "#fca5a5"),
+    "medium":   ("#7c2d12", "#fb923c", "#fdba74"),
+    "low":      ("#78350f", "#f59e0b", "#fcd34d"),
+    "info":     ("#334155", "#64748b", "#cbd5e1"),
+}
+
+
+def _severity_meta(d, klass_label, source, ctx, gate_klass):
+    """Return (rank, badge_text, tier) for a finding. DOM is prioritised first,
+    then by severity. badge_text is a compact 'TYPE · SEV' shown as a red pill."""
+    sev = str(d.get("gate_severity") or d.get("severity") or "info").lower()
+    if sev not in _SEV_SCORE:
+        sev = ("critical" if "crit" in sev else "high" if "high" in sev
+               else "medium" if "med" in sev else "low" if "low" in sev else "info")
+    s, k, c = str(source).lower(), str(klass_label), str(ctx).lower()
+    is_dom = (s in ("dom-v6", "static-js", "dom") or "dom" in c or "taint" in c
+              or "DOM" in k or k.startswith("JS:"))
+    is_stored = (s in ("stored", "stored-roundtrip") or "stored" in c or "STORED" in k)
+    # STORED takes precedence over DOM in the label: a persisted finding is "stored"
+    # even when it is confirmed client-side (browser form-submit round-trip).
+    cls = "STORED" if is_stored else ("DOM" if is_dom else "XSS")
+    # Severity is the PRIMARY sort key so the colourful/high badges are always on
+    # top; DOM/STORED only break ties WITHIN the same severity (so a gray INFO never
+    # sits above a red HIGH).
+    sev_rank = _SEV_SCORE[sev] * 100 + (5 if (is_dom or is_stored) else 0)
+    # Type sort key: group STORED > DOM > XSS, then severity within each group.
+    type_rank = {"STORED": 3, "DOM": 2, "XSS": 1}.get(cls, 1) * 1000 + sev_rank
+    return sev_rank, type_rank, f"{cls} · {sev.upper()}", sev
+
+
+class _SevSortItem(QTableWidgetItem):
+    """Severity cell that sorts by its numeric rank (UserRole), not alphabetically."""
+    def __lt__(self, other):
+        try:
+            return (self.data(Qt.UserRole) or 0) < (other.data(Qt.UserRole) or 0)
+        except Exception:
+            return super().__lt__(other)
+
+
+class _SeverityBadgeDelegate(QStyledItemDelegate):
+    """Paints the Severity column as a rounded red 'pill' badge."""
+    def paint(self, painter, option, index):
+        text = index.data(Qt.DisplayRole) or ""
+        tier = str(index.data(Qt.UserRole + 1) or "").lower()
+        if not text or text in ("—", "-") or tier not in _SEV_BADGE_COLORS:
+            super().paint(painter, option, index)
+            return
+        painter.save()
+        painter.setRenderHint(QPainter.Antialiasing, True)
+        if option.state & QStyle.State_Selected:
+            painter.fillRect(option.rect, QColor("#3a1116"))
+        fill, border, fg = _SEV_BADGE_COLORS[tier]
+        r = QRectF(option.rect).adjusted(7, 5, -7, -5)
+        bgc = QColor(fill); bgc.setAlpha(160)
+        painter.setBrush(QBrush(bgc))
+        painter.setPen(QPen(QColor(border), 1.4))
+        painter.drawRoundedRect(r, 7, 7)
+        f = QFont(option.font); f.setBold(True)
+        # The table font is pixel-sized (QSS font-size:Npx), so pointSizeF() is -1;
+        # bump the pixel size instead of the point size to avoid a "point size <= 0"
+        # warning spammed on every repaint.
+        if f.pointSizeF() > 0:
+            f.setPointSizeF(f.pointSizeF() + 0.5)
+        elif f.pixelSize() > 0:
+            f.setPixelSize(f.pixelSize() + 1)
+        painter.setFont(f)
+        painter.setPen(QColor(fg))
+        painter.drawText(r, Qt.AlignCenter, str(text))
+        painter.restore()
+
+    def sizeHint(self, option, index):
+        s = super().sizeHint(option, index)
+        s.setHeight(max(s.height(), 34))
+        return s
+
+
+class _FitTable(QTableWidget):
+    """Table whose columns scale PROPORTIONALLY to fill the viewport width — they
+    keep their relative widths and grow together, so the table stretches EVENLY on
+    ultra-wide screens (Odyssey G9) instead of one column ballooning. When the
+    window is narrower than the columns' natural sum it falls back to those widths
+    + the horizontal scrollbar."""
+    def __init__(self, *a, **k):
+        super().__init__(*a, **k)
+        self._base = {}
+
+    def setBaseWidths(self, base):
+        self._base = dict(base)
+        self._fit()
+
+    def resizeEvent(self, e):
+        super().resizeEvent(e)
+        self._fit()
+
+    def _fit(self):
+        base = getattr(self, "_base", None)
+        if not base:
+            return
+        total = sum(base.values())
+        if total <= 0:
+            return
+        vw = self.viewport().width()
+        k = (vw / total) if vw > total else 1.0
+        hdr = self.horizontalHeader()
+        for c, w in base.items():
+            hdr.resizeSection(c, max(1, int(round(w * k))))
+
+
+# Neutral-dark style for the RESULTS + FINDINGS tables (larger, cleaner rows).
+# The ONLY red in these panels is the Severity badge + the panel headings — the
+# table itself stays dark so the red pills pop instead of washing everything out.
+_FINDINGS_QSS = """
+QTableWidget { background:#1b1d22; alternate-background-color:#1f2127;
+    gridline-color:#2b2e35; font-size:12px; border:1px solid #2b2e35; border-radius:6px; }
+QHeaderView::section { background:#23252b; color:#9aa0ab; font-weight:bold;
+    border:0px; border-bottom:1px solid #33363d; padding:7px 8px; letter-spacing:1px; }
+QTableWidget::item { padding:5px 8px; }
+QTableWidget::item:selected { background:#2c2f37; color:#ffffff; }
+QTableCornerButton::section { background:#23252b; border:0; }
+"""
 
 # Text
 TXT_PRIMARY   = QColor("#e2e8f0")
@@ -690,6 +824,7 @@ class AttackGraphWidget(QWidget):
             self._draw_nodes(p)
 
         self._draw_hud(p)
+        self._draw_legend(p)
 
         p.end()
 
@@ -788,27 +923,23 @@ class AttackGraphWidget(QWidget):
             self._draw_one_node(p, n, sx, sy, r)
 
     def _draw_one_node(self, p: QPainter, n: _Node, sx: float, sy: float, r: float):
-        # Determine fill color by kind/state/gate
+        # Fill by the 3-state legend scheme (discovered / crawled / vulnerable),
+        # so node colors match the key drawn at the bottom-left of the graph:
+        #   root      → teal  (the scan target, center)
+        #   hit       → red   (VULNERABLE — a confirmed finding on this param)
+        #   waf       → amber (WAF-blocked — a distinct state, kept out of the key)
+        #   path      → green (CRAWLED — a page the crawler fetched)
+        #   param/…   → gray  (DISCOVERED — endpoint/param found, not yet a hit)
         if n.kind == "root":
             fill = COL_ROOT
-        elif n.kind == "path":
-            fill = COL_PATH
         elif n.state == "hit":
-            # Use gate classification when available, else legacy green
-            if n.gate_klass == "xss_executable":
-                fill = COL_XSS_EXEC
-            elif n.gate_klass == "tag_injection":
-                fill = COL_TAG_INJ
-            elif n.gate_klass == "text_only":
-                fill = COL_TEXT_ONLY
-            else:
-                fill = COL_HIT_LEGACY
+            fill = COL_VULN
         elif n.state == "waf":
             fill = COL_WAF
-        elif n.state == "probing":
-            fill = COL_PARAM
+        elif n.kind == "path":
+            fill = COL_CRAWLED
         else:
-            fill = COL_PARAM
+            fill = COL_DISCOVERED
 
         # Halo for hit/waf
         if n.state in ("hit", "waf"):
@@ -921,6 +1052,30 @@ class AttackGraphWidget(QWidget):
         metrics = p.fontMetrics()
         tw = metrics.horizontalAdvance(hint)
         p.drawText(self.width() - tw - 12, self.height() - 8, hint)
+
+    def _draw_legend(self, p: QPainter):
+        """Bottom-left key: 3 dots whose colors are IDENTICAL to the graph nodes —
+        gray = discovered, green = crawled, red = vulnerable."""
+        _, hud_dim, hud_secondary = self._hud_colors()
+        items = [
+            (COL_DISCOVERED, "discovered"),
+            (COL_CRAWLED,    "crawled"),
+            (COL_VULN,       "vulnerable"),
+        ]
+        p.setFont(self._font(-3))
+        fm = p.fontMetrics()
+        r = 4.0
+        y = self.height() - 26          # one line above the zoom hint
+        x = 14.0
+        for col, label in items:
+            # dot (same fill/glass look as a node, so it reads as "this color = …")
+            p.setPen(QPen(QColor(0, 0, 0, 80), 1))
+            p.setBrush(QBrush(col))
+            p.drawEllipse(QPointF(x + r, y - r), r, r)
+            # label
+            p.setPen(hud_secondary)
+            p.drawText(int(x + 2 * r + 6), int(y), label)
+            x += 2 * r + 6 + fm.horizontalAdvance(label) + 18
 
 
 # ════════════════════════════════════════════════════════════════════════
@@ -4050,14 +4205,73 @@ class XSSGrenadeGUI(QMainWindow):
         return w
 
     def _t_results(self):
-        w = QWidget(); v = QVBoxLayout(w); v.setContentsMargins(0,6,0,0)
+        from PyQt5.QtWidgets import QLabel as _QLabel
+        w = QWidget(); v = QVBoxLayout(w); v.setContentsMargins(0,6,0,0); v.setSpacing(4)
+
+        # ── RESULTS: compact URL + Parameter summary (one row per finding) ──────
+        self._res_lbl = _QLabel("RESULTS  [0]")
+        self._res_lbl.setStyleSheet(
+            "color:#ff5573; font-size:11px; letter-spacing:3px; font-weight:bold;")
+        v.addWidget(self._res_lbl)
+        # URL only — the parameter is already shown in the FINDINGS table below.
+        self.res_summary_tbl = QTableWidget(0, 1)
+        self.res_summary_tbl.setHorizontalHeaderLabels(["URL"])
+        _sh = self.res_summary_tbl.horizontalHeader()
+        _sh.setSectionResizeMode(0, QHeaderView.Stretch)   # fills the full width
+        self.res_summary_tbl.setEditTriggers(QTableWidget.NoEditTriggers)
+        self.res_summary_tbl.verticalHeader().setVisible(False)
+        self.res_summary_tbl.setSelectionBehavior(QTableWidget.SelectRows)
+        self.res_summary_tbl.setAlternatingRowColors(True)
+        self.res_summary_tbl.setWordWrap(False)
+        self.res_summary_tbl.setMaximumHeight(240)         # compact top panel
+        self.res_summary_tbl.setVerticalScrollMode(QTableWidget.ScrollPerPixel)
+        self.res_summary_tbl.setStyleSheet(_FINDINGS_QSS)  # red-accented, larger
+        self.res_summary_tbl.verticalHeader().setDefaultSectionSize(30)
+        # click a summary row → jump to the matching detailed finding below
+        self.res_summary_tbl.cellClicked.connect(
+            lambda r, c: self._select_finding_row(r))
+        v.addWidget(self.res_summary_tbl)
+
+        # ── FINDINGS: full detail (11 columns) + a gear to pick the sort order ──
+        _fnd_row = QHBoxLayout(); _fnd_row.setContentsMargins(0, 0, 0, 0)
+        self._fnd_lbl = _QLabel("FINDINGS  [0]")
+        self._fnd_lbl.setStyleSheet(
+            "color:#ff5573; font-size:11px; letter-spacing:3px; font-weight:bold;")
+        _fnd_row.addWidget(self._fnd_lbl)
+        _fnd_row.addSpacing(14)
+        self._findings_sort_mode = "severity"
+        self._sort_btn = QPushButton("⚙")
+        self._sort_btn.setCursor(Qt.PointingHandCursor)
+        self._sort_btn.setToolTip("Sort findings")
+        self._sort_btn.setFlat(True)
+        self._sort_btn.setStyleSheet(
+            "QPushButton{color:#9aa0ab; background:transparent; border:none;"
+            "padding:0px 4px; font-size:16px;}"
+            "QPushButton:hover{color:#ff5573;}"
+            "QPushButton:pressed{background:transparent;}"
+            "QPushButton::menu-indicator{width:0px;}")
+        _menu = QMenu(self._sort_btn)
+        self._sort_actions = {}
+        # Severity (high→low) is the automatic default; the gear only offers the one
+        # genuinely different view — Discovery — as a toggle. Unchecked = default.
+        _act = _menu.addAction("Discovery  (newest first)")
+        _act.setCheckable(True)
+        _act.triggered.connect(
+            lambda checked: self._set_findings_sort("discovery" if checked else "severity"))
+        self._sort_actions["discovery"] = _act
+        self._sort_btn.setMenu(_menu)
+        _fnd_row.addWidget(self._sort_btn)
+        _fnd_row.addStretch()
+        v.addLayout(_fnd_row)
         # 11 sloupců (v10.11+, v10.12 renamed CVE → CWE/CVE):
         # URL | Parametr | Kontext | Klasa | CWE/CVE | Probe | Zdroj | Status | WAF | CSP | Payload
         # CWE/CVE sloupec: CVE pro known vulnerabilities, CWE číslo pro generic
         # findings (CWE-79 = XSS, CWE-1321 = Prototype Pollution, etc.).
-        self.res_tbl = QTableWidget(0, 11)
+        self.res_tbl = _FitTable(0, 11)
+        # "Class" (logical col 3) is renamed "Severity" and moved to the FRONT
+        # (visually) + rendered as a red badge + used as the sort key below.
         self.res_tbl.setHorizontalHeaderLabels([
-            "URL", "Parameter", "Context", "Class", "CWE / CVE", "Probe",
+            "URL", "Parameter", "Context", "Severity", "CWE / CVE", "Probe",
             "Source", "Status", "WAF", "CSP", "Payload"
         ])
         hdr = self.res_tbl.horizontalHeader()
@@ -4069,13 +4283,17 @@ class XSSGrenadeGUI(QMainWindow):
         # scrollbar řeší obojí: standardní šířka + možnost rolovat.
         # ─────────────────────────────────────────────────────────────────
         hdr.setSectionResizeMode(QHeaderView.Interactive)
-        hdr.setStretchLastSection(False)   # Payload bude mít vlastní šířku
+        # Columns scale PROPORTIONALLY to fill the width (see _FitTable.setBaseWidths
+        # below) so the whole table stretches EVENLY on ultra-wide screens — not just
+        # the last column. stretchLastSection off so it doesn't fight the proportional
+        # fit; narrow windows fall back to base widths + horizontal scroll.
+        hdr.setStretchLastSection(False)
         # Per-column default widths (uživatel může pak přetáhnout)
         col_widths = {
             0: 320,   # URL — dlouhé absolute URLs
             1: 160,   # Parametr — JS:js?id=G-LH49JXVYP6 atd.
             2: 240,   # Kontext — "static-js-taint (high)" atd.
-            3: 130,   # Klasa — "TT:default!" atd.
+            3: 150,   # Severity — red badge pill ("XSS · HIGH")
             4: 150,   # CVE — "CVE-2026-41238" atd.
             5: 70,    # Probe — symbol nebo "—"
             6: 130,   # Zdroj — "trusted-types" atd.
@@ -4086,6 +4304,8 @@ class XSSGrenadeGUI(QMainWindow):
         }
         for col, width in col_widths.items():
             self.res_tbl.setColumnWidth(col, width)
+        # Enable proportional column stretching (fills wide screens evenly).
+        self.res_tbl.setBaseWidths(col_widths)
         # Povol horizontální scrollbar když součet šířek překročí viewport
         from PyQt5.QtCore import Qt as _Qt
         self.res_tbl.setHorizontalScrollMode(QTableWidget.ScrollPerPixel)
@@ -4097,6 +4317,17 @@ class XSSGrenadeGUI(QMainWindow):
         self.res_tbl.setSelectionBehavior(QTableWidget.SelectRows)
         self.res_tbl.setAlternatingRowColors(True)
         self.res_tbl.setWordWrap(False)
+        # ── graphical polish: red style, taller rows, severity badge, sorting ──
+        self.res_tbl.setStyleSheet(_FINDINGS_QSS)
+        self.res_tbl.verticalHeader().setDefaultSectionSize(34)   # room for the pill
+        self._sev_delegate = _SeverityBadgeDelegate(self.res_tbl)
+        self.res_tbl.setItemDelegateForColumn(3, self._sev_delegate)
+        # Severity displays FIRST (visual move; logical index stays 3 so all the
+        # existing setItem(row, 3, …) calls keep working).
+        hdr.moveSection(3, 0)
+        # Row order is maintained by INSERT-IN-SORTED-POSITION (_res_row_sorted),
+        # so DOM findings sit on top, then high→medium→low. No Qt sorting (it would
+        # re-order mid-insert and invalidate the row index).
         v.addWidget(self.res_tbl); return w
 
     def _t_library_audit(self):
@@ -5039,7 +5270,9 @@ class XSSGrenadeGUI(QMainWindow):
         # Show/hide cookie value toggle
         self.btn_show_cookies = QPushButton("Show")
         self.btn_show_cookies.setCheckable(True)
-        self.btn_show_cookies.setFixedWidth(60)
+        # minimumWidth (not fixed) so the label never clips on high-DPI / 5K.
+        self.btn_show_cookies.setMinimumWidth(90)
+        self.btn_show_cookies.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Fixed)
         def _toggle_cookies_visibility(checked):
             self.inp_auth_cookies.setEchoMode(
                 QLineEdit.Normal if checked else QLineEdit.Password)
@@ -7320,6 +7553,7 @@ class XSSGrenadeGUI(QMainWindow):
     def _reset(self):
         self.hit_count = 0
         self.log_out.clear(); self.clog.clear(); self.res_tbl.setRowCount(0); self.csp_tbl.setRowCount(0)
+        self.res_summary_tbl.setRowCount(0); self._sync_result_counts()
         self.csp_raw.clear(); self.csp_score.setText("—"); self.csp_score.setStyleSheet("font-size:42px; font-weight:bold; color:#808080;")
         self.csp_note.setText("Waiting for scan..."); self.csp_extra.clear(); self.pb.setValue(0)
         # v10.16: reset crawler bar zpět na určitý rozsah + IDLE label
@@ -7997,7 +8231,14 @@ class XSSGrenadeGUI(QMainWindow):
                 pass
             return  # do NOT add to RESULTS
 
-        row = self._res_tbl_new_row()
+        # Severity + type ranks and red-badge text. Insert at the position that
+        # keeps FINDINGS ordered by the CURRENT sort mode (severity/type/discovery).
+        _sev_rank, _type_rank, _badge, _tier = _severity_meta(
+            d, klass_label, d.get("source", "seed"), ctx, gate_klass)
+        _seq = getattr(self, "_finding_seq", 0)
+        self._finding_seq = _seq + 1
+        _active = self._active_sort_key(_sev_rank, _type_rank, _seq)
+        row = self._res_row_sorted(_active)
 
         def cell(text, color="#cccccc", tooltip=None):
             item = QTableWidgetItem(str(text))
@@ -8033,7 +8274,14 @@ class XSSGrenadeGUI(QMainWindow):
         self.res_tbl.setItem(row, 0,  url_item)
         self.res_tbl.setItem(row, 1,  cell(d.get("param", ""),      "#e0e0e0"))
         self.res_tbl.setItem(row, 2,  cell(ctx,                     ctx_color))
-        self.res_tbl.setItem(row, 3,  cell(klass_label,             klass_color, tooltip=klass_tooltip))
+        _sev_item = _SevSortItem(_badge)
+        _sev_item.setData(Qt.UserRole, _active)         # active sort key
+        _sev_item.setData(Qt.UserRole + 1, _tier)       # badge color tier
+        _sev_item.setData(Qt.UserRole + 2, _sev_rank)   # severity-mode key
+        _sev_item.setData(Qt.UserRole + 3, _type_rank)  # type-mode key
+        _sev_item.setData(Qt.UserRole + 4, _seq)        # discovery-mode key
+        _sev_item.setToolTip(klass_label + (f"\n{klass_tooltip}" if klass_tooltip else ""))
+        self.res_tbl.setItem(row, 3,  _sev_item)
         self.res_tbl.setItem(row, 4,  cell(cve_id,                  cve_color,   tooltip=cve_tooltip))
         self.res_tbl.setItem(row, 5,  cell(probe_label,             probe_color, tooltip=probe_tooltip))
         self.res_tbl.setItem(row, 6,  cell(d.get("source","seed"),  "#666666"))
@@ -8041,8 +8289,10 @@ class XSSGrenadeGUI(QMainWindow):
         self.res_tbl.setItem(row, 8,  cell(waf_s,                   "#3b82f6"))
         self.res_tbl.setItem(row, 9,  cell(d.get("csp_note",""),    "#888888"))
         self.res_tbl.setItem(row, 10, pl_item)
-        self._apply_row_tint(self.res_tbl, row,
-                             d.get("gate_severity") or d.get("severity"))
+        # No full-row tint — color lives ONLY in the Severity badge (first column).
+
+        # Mirror (URL, Parameter) into the compact RESULTS summary panel above.
+        self._mirror_to_summary(url_full, d.get("param", ""))
 
         # v10.80: RESULTS tab label reflects ACTUAL res_tbl rows (library-audit
         # findings live in the LIBRARY AUDIT tab and must not count here).
@@ -8215,6 +8465,109 @@ class XSSGrenadeGUI(QMainWindow):
         row = self.res_tbl.rowCount()
         self.res_tbl.insertRow(row)
         return row
+
+    def _res_row_sorted(self, rank: int) -> int:
+        """Insert a new FINDINGS row at the position that keeps the table ordered
+        by severity rank DESC (DOM first, then high→low). Rows carry their rank in
+        the Severity cell's UserRole. Returns the new row index."""
+        t = self.res_tbl
+        if t.rowCount() >= self._RES_TBL_MAX_ROWS:
+            t.removeRow(t.rowCount() - 1)      # drop lowest-priority (bottom)
+        pos = t.rowCount()
+        for r in range(t.rowCount()):
+            it = t.item(r, 3)
+            er = it.data(Qt.UserRole) if it is not None else None
+            if er is None:
+                er = -1
+            if rank > er:
+                pos = r
+                break
+        t.insertRow(pos)
+        return pos
+
+    # ── FINDINGS sort control (gear menu: severity / type / discovery) ──────────
+    def _active_sort_key(self, sev_rank, type_rank, seq):
+        """The sort key for the CURRENTLY selected findings-sort mode. All keys are
+        'higher = nearer the top' so the table is always ordered descending."""
+        m = getattr(self, "_findings_sort_mode", "severity")
+        return {"severity": sev_rank, "type": type_rank, "discovery": seq}.get(m, sev_rank)
+
+    def _set_findings_sort(self, mode: str):
+        """Re-order the FINDINGS table by `mode`. Reads each row's stored components
+        (severity rank / type rank / discovery seq from the Severity cell) and
+        rebuilds the table in the new order — keeps badges + all columns intact."""
+        if mode not in ("severity", "type", "discovery"):
+            return
+        self._findings_sort_mode = mode
+        t = self.res_tbl
+        snap = []
+        for r in range(t.rowCount()):
+            cells = [t.item(r, c).clone() if t.item(r, c) else None
+                     for c in range(t.columnCount())]
+            sev = cells[3]
+            if sev is not None:
+                comp = {"severity": sev.data(Qt.UserRole + 2),
+                        "type":     sev.data(Qt.UserRole + 3),
+                        "discovery": sev.data(Qt.UserRole + 4)}
+                key = comp.get(mode)
+                key = key if key is not None else -1
+                sev.setData(Qt.UserRole, key)   # keep the active key in sync
+            else:
+                key = -1
+            snap.append((key, cells))
+        snap.sort(key=lambda x: x[0], reverse=True)
+        t.setRowCount(0)
+        for _, cells in snap:
+            r = t.rowCount(); t.insertRow(r)
+            for c, it in enumerate(cells):
+                if it is not None:
+                    t.setItem(r, c, it)
+        self._update_sort_gear_labels()
+
+    def _update_sort_gear_labels(self):
+        act = getattr(self, "_sort_actions", {}).get("discovery")
+        if act is not None:
+            act.setChecked(getattr(self, "_findings_sort_mode", "severity") == "discovery")
+
+    def _mirror_to_summary(self, url: str, param: str):
+        """Add the (URL, Parameter) of a finding to the compact RESULTS table and
+        refresh both panel counters. Same FIFO cap as res_tbl so the two stay in
+        step (row N of RESULTS ↔ row N of FINDINGS)."""
+        t = getattr(self, "res_summary_tbl", None)
+        if t is None:
+            return
+        if t.rowCount() >= self._RES_TBL_MAX_ROWS:
+            t.removeRow(0)
+        r = t.rowCount(); t.insertRow(r)
+        ui = QTableWidgetItem(str(url)); ui.setForeground(QColor("#cccccc"))
+        ui.setToolTip(f"{url}   ·   {param}" if param else str(url))
+        t.setItem(r, 0, ui)
+        self._sync_result_counts()
+
+    def _sync_result_counts(self):
+        try:
+            self._res_lbl.setText(f"RESULTS  [{self.res_summary_tbl.rowCount()}]")
+            self._fnd_lbl.setText(f"FINDINGS  [{self.res_tbl.rowCount()}]")
+        except Exception:
+            pass
+
+    def _select_finding_row(self, r: int):
+        """Clicking a RESULTS summary row selects + scrolls to the matching
+        detailed FINDINGS row. The FINDINGS table is severity-sorted (so its order
+        differs from the discovery-ordered summary) — match by URL + parameter."""
+        try:
+            su = self.res_summary_tbl.item(r, 0)
+            if su is None:
+                return
+            url = su.text()
+            for fr in range(self.res_tbl.rowCount()):
+                fu = self.res_tbl.item(fr, 0)
+                if fu is not None and fu.text() == url:
+                    self.res_tbl.selectRow(fr)
+                    self.res_tbl.scrollToItem(fu)
+                    return
+        except Exception:
+            pass
 
     @staticmethod
     def _format_eta(remaining: float, cap_24h: bool = True) -> str:
@@ -8434,6 +8787,7 @@ class XSSGrenadeGUI(QMainWindow):
 
         # Vyčisti tabulku a naplň ji
         self.res_tbl.setRowCount(0)
+        self.res_summary_tbl.setRowCount(0)
         self.hit_count = 0
 
         ctx_colors = {
@@ -8540,8 +8894,9 @@ class XSSGrenadeGUI(QMainWindow):
             self.res_tbl.setItem(row, 8,  cell(waf,          "#3b82f6"))
             self.res_tbl.setItem(row, 9,  cell(csp_note,     "#888888"))
             self.res_tbl.setItem(row, 10, pl_item)
-            self._apply_row_tint(self.res_tbl, row,
-                                 entry.get("gate_severity") or entry.get("severity"))
+            # No full-row tint — color lives ONLY in the Severity badge column.
+            # Mirror into the compact RESULTS summary (report-load path).
+            self._mirror_to_summary(url, param)
 
 
     def _err(self, msg):
