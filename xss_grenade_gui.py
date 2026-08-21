@@ -1533,6 +1533,7 @@ QLineEdit#destructive_input { color: $warn_text; border: 1px solid $warn_border;
 QLineEdit#destructive_input:disabled { color: $disabled_fg; border: 1px solid $border_input; background: $bg_input; padding: 4px; }
 
 /* SLIM TOP BAR + STAT CHIPS (v10.30 redesign) */
+QWidget#title_bar { background: $bg_header; border-bottom: 1px solid $border; }
 QLabel#brand_compact { color: $accent_text; font-size: 17px; font-weight: bold; letter-spacing: 3px; background: transparent; border: none; }
 QWidget#stat_chip { background-color: $bg_card; border: 1px solid $border; border-radius: 9px; }
 QLabel#chip_value { color: $accent_text; font-size: 15px; font-weight: bold; background: transparent; border: none; }
@@ -3853,9 +3854,6 @@ class XSSGrenadeGUI(QMainWindow):
         w = QWidget(); w.setObjectName("title_bar")
         w.setFixedHeight(40)
         w.setAttribute(Qt.WA_StyledBackground, True)
-        w.setStyleSheet(
-            f"QWidget#title_bar {{ background: {theme('bg_header')}; "
-            f"border-bottom: 1px solid {theme('border')}; }}")
         h = QHBoxLayout(w)
         h.setContentsMargins(18, 0, 8, 0)
         h.setSpacing(10)
