@@ -52,8 +52,8 @@ from urllib.parse import urlparse as _urlparse
 # ════════════════════════════════════════════════════════════════════════════
 
 # Background / chrome
-BG_TOP    = QColor("#0d0e10")
-BG_BOTTOM = QColor("#16181c")
+BG_TOP    = QColor("#05070d")
+BG_BOTTOM = QColor("#080c15")
 GRID      = QColor(255, 255, 255, 8)
 
 # Connection lines
@@ -195,14 +195,16 @@ class _FitTable(QTableWidget):
 # Neutral-dark style for the RESULTS + FINDINGS tables (larger, cleaner rows).
 # The ONLY red in these panels is the Severity badge + the panel headings — the
 # table itself stays dark so the red pills pop instead of washing everything out.
-_FINDINGS_QSS = """
-QTableWidget { background:#1b1d22; alternate-background-color:#1f2127;
-    gridline-color:#2b2e35; font-size:12px; border:1px solid #2b2e35; border-radius:6px; }
-QHeaderView::section { background:#23252b; color:#9aa0ab; font-weight:bold;
-    border:0px; border-bottom:1px solid #33363d; padding:7px 8px; letter-spacing:1px; }
-QTableWidget::item { padding:5px 8px; }
-QTableWidget::item:selected { background:#2c2f37; color:#ffffff; }
-QTableCornerButton::section { background:#23252b; border:0; }
+def findings_qss() -> str:
+    return f"""
+QTableWidget {{ background:{theme('bg_deep')}; alternate-background-color:{theme('bg_alt_row')};
+    gridline-color:{theme('border_subtle')}; font-size:12px; color:{theme('fg_table')};
+    border:1px solid {theme('border')}; border-radius:6px; }}
+QHeaderView::section {{ background:{theme('bg_header')}; color:{theme('fg_header')}; font-weight:bold;
+    border:0px; border-bottom:1px solid {theme('border')}; padding:7px 8px; letter-spacing:1px; }}
+QTableWidget::item {{ padding:5px 8px; }}
+QTableWidget::item:selected {{ background:{theme('sel_bg')}; color:{theme('sel_fg')}; }}
+QTableCornerButton::section {{ background:{theme('bg_header')}; border:0; }}
 """
 
 # Text
@@ -1092,20 +1094,20 @@ import string as _string
 
 PALETTES = {
     "dark": {
-        "bg":            "#26282e",
-        "bg_alt":        "#2c2f36",
-        "bg_deep":       "#1d1f24",
-        "bg_card":       "#2f323a",
-        "bg_input":      "#1f2127",
-        "bg_input_focus": "#24272e",
-        "bg_btn":        "#363a43",
-        "bg_btn_hover":  "#3e434d",
-        "bg_tab":        "#2a2d34",
-        "bg_tab_sel":    "#343841",
-        "bg_tab_hover":  "#2f333a",
-        "bg_tooltip":    "#34383f",
-        "bg_header":     "#2c2f36",
-        "bg_alt_row":    "#2a2d34",
+        "bg":            "#05070d",
+        "bg_alt":        "#080c15",
+        "bg_deep":       "#03050a",
+        "bg_card":       "#0a111c",
+        "bg_input":      "#060b13",
+        "bg_input_focus": "#0a1019",
+        "bg_btn":        "#101b28",
+        "bg_btn_hover":  "#16273a",
+        "bg_tab":        "#080c15",
+        "bg_tab_sel":    "#0f1a28",
+        "bg_tab_hover":  "#0b1220",
+        "bg_tooltip":    "#0f1a28",
+        "bg_header":     "#080c15",
+        "bg_alt_row":    "#090f19",
         "fg":            "#e9ebef",
         "fg_muted":      "#9aa0ab",
         "fg_faint":      "#6f7682",
@@ -1115,19 +1117,19 @@ PALETTES = {
         "fg_table":      "#dde1e8",
         "fg_header":     "#c3c9d3",
         "fg_group":      "#abb1bc",
-        "border":        "#3a3e47",
-        "border_input":  "#444952",
-        "border_subtle": "#34383f",
+        "border":        "#182534",
+        "border_input":  "#1f2e40",
+        "border_subtle": "#131e2b",
         "accent":        "#ff2d55",
         "accent_text":   "#ff5573",
         "accent_hover":  "#ff4d6d",
         "sel_bg":        "#2a0710",
         "sel_fg":        "#ffffff",
-        "scrollbar":     "#2c323d",
+        "scrollbar":     "#16273a",
         "disabled_bg":   "#3a0a14",
         "disabled_fg":   "#9a9a9a",
-        "divider":       "#222222",
-        "card_sep":      "#222222",
+        "divider":       "#182534",
+        "card_sep":      "#182534",
         "warn_text":     "#ff8800",
         "warn_bg":       "#1a0f00",
         "warn_border":   "#5a3000",
@@ -4225,7 +4227,7 @@ class XSSGrenadeGUI(QMainWindow):
         self.res_summary_tbl.setWordWrap(False)
         self.res_summary_tbl.setMaximumHeight(240)         # compact top panel
         self.res_summary_tbl.setVerticalScrollMode(QTableWidget.ScrollPerPixel)
-        self.res_summary_tbl.setStyleSheet(_FINDINGS_QSS)  # red-accented, larger
+        self.res_summary_tbl.setStyleSheet(findings_qss())  # theme-aware
         self.res_summary_tbl.verticalHeader().setDefaultSectionSize(30)
         # click a summary row → jump to the matching detailed finding below
         self.res_summary_tbl.cellClicked.connect(
@@ -4317,8 +4319,8 @@ class XSSGrenadeGUI(QMainWindow):
         self.res_tbl.setSelectionBehavior(QTableWidget.SelectRows)
         self.res_tbl.setAlternatingRowColors(True)
         self.res_tbl.setWordWrap(False)
-        # ── graphical polish: red style, taller rows, severity badge, sorting ──
-        self.res_tbl.setStyleSheet(_FINDINGS_QSS)
+        # ── graphical polish: theme-aware, taller rows, severity badge, sorting ──
+        self.res_tbl.setStyleSheet(findings_qss())
         self.res_tbl.verticalHeader().setDefaultSectionSize(34)   # room for the pill
         self._sev_delegate = _SeverityBadgeDelegate(self.res_tbl)
         self.res_tbl.setItemDelegateForColumn(3, self._sev_delegate)
@@ -5404,6 +5406,12 @@ class XSSGrenadeGUI(QMainWindow):
         # ulož napříč sezeními
         try:
             QSettings("TX-C0RE", "XSS Grenade").setValue("ui/theme", name)
+        except Exception:
+            pass
+        # re-aplikuj theme-aware styl na results/findings tabulky
+        try:
+            self.res_summary_tbl.setStyleSheet(findings_qss())
+            self.res_tbl.setStyleSheet(findings_qss())
         except Exception:
             pass
         # překresli inline-stylované finding karty, ať vezmou novou paletu
@@ -8240,9 +8248,9 @@ class XSSGrenadeGUI(QMainWindow):
         _active = self._active_sort_key(_sev_rank, _type_rank, _seq)
         row = self._res_row_sorted(_active)
 
-        def cell(text, color="#cccccc", tooltip=None):
+        def cell(text, color=None, tooltip=None):
             item = QTableWidgetItem(str(text))
-            item.setForeground(QColor(color))
+            item.setForeground(QColor(color or theme('fg_table')))
             if tooltip:
                 item.setToolTip(str(tooltip))
             return item
@@ -8250,14 +8258,14 @@ class XSSGrenadeGUI(QMainWindow):
         # Zkrátit URL pro zobrazení ale tooltipu dát plnou
         url_full = d.get("url", "")
         url_item = QTableWidgetItem(url_full)
-        url_item.setForeground(QColor("#cccccc"))
+        url_item.setForeground(QColor(theme('fg_table')))
         url_item.setToolTip(url_full)
 
-        ctx_color = ctx_colors.get(ctx, "#aaaaaa")
+        ctx_color = ctx_colors.get(ctx, theme('fg_muted'))
 
         waf_v = d.get("waf","")
         waf_s = waf_v.get("name","") if isinstance(waf_v, dict) else str(waf_v)
-        pl_item = cell(d.get("payload",""), "#666666")
+        pl_item = cell(d.get("payload",""), theme('fg_faint'))
         pl_item.setToolTip(d.get("payload",""))
 
         # 11 sloupců (v10.11+): URL | Param | Kontext | Klasa | CVE | Probe | Zdroj | Status | WAF | CSP | Payload
@@ -8272,7 +8280,7 @@ class XSSGrenadeGUI(QMainWindow):
         cve_id, cve_color, cve_tooltip = self._extract_cwe_cve(d)
 
         self.res_tbl.setItem(row, 0,  url_item)
-        self.res_tbl.setItem(row, 1,  cell(d.get("param", ""),      "#e0e0e0"))
+        self.res_tbl.setItem(row, 1,  cell(d.get("param", ""),      theme('fg_table')))
         self.res_tbl.setItem(row, 2,  cell(ctx,                     ctx_color))
         _sev_item = _SevSortItem(_badge)
         _sev_item.setData(Qt.UserRole, _active)         # active sort key
@@ -8284,10 +8292,10 @@ class XSSGrenadeGUI(QMainWindow):
         self.res_tbl.setItem(row, 3,  _sev_item)
         self.res_tbl.setItem(row, 4,  cell(cve_id,                  cve_color,   tooltip=cve_tooltip))
         self.res_tbl.setItem(row, 5,  cell(probe_label,             probe_color, tooltip=probe_tooltip))
-        self.res_tbl.setItem(row, 6,  cell(d.get("source","seed"),  "#666666"))
-        self.res_tbl.setItem(row, 7,  cell(d.get("status",""),      "#555555"))
+        self.res_tbl.setItem(row, 6,  cell(d.get("source","seed"),  theme('fg_faint')))
+        self.res_tbl.setItem(row, 7,  cell(d.get("status",""),      theme('fg_faint')))
         self.res_tbl.setItem(row, 8,  cell(waf_s,                   "#3b82f6"))
-        self.res_tbl.setItem(row, 9,  cell(d.get("csp_note",""),    "#888888"))
+        self.res_tbl.setItem(row, 9,  cell(d.get("csp_note",""),    theme('fg_faint')))
         self.res_tbl.setItem(row, 10, pl_item)
         # No full-row tint — color lives ONLY in the Severity badge (first column).
 
@@ -8539,7 +8547,7 @@ class XSSGrenadeGUI(QMainWindow):
         if t.rowCount() >= self._RES_TBL_MAX_ROWS:
             t.removeRow(0)
         r = t.rowCount(); t.insertRow(r)
-        ui = QTableWidgetItem(str(url)); ui.setForeground(QColor("#cccccc"))
+        ui = QTableWidgetItem(str(url)); ui.setForeground(QColor(theme('fg_table')))
         ui.setToolTip(f"{url}   ·   {param}" if param else str(url))
         t.setItem(r, 0, ui)
         self._sync_result_counts()
