@@ -2,7 +2,7 @@
   <img src="assets/xss_grenade.png" alt="XSS Grenade — automated XSS vulnerability scanner" width="860">
 </p>
 
-<h1 align="center">🔐 XSS Grenade</h1>
+<h1 align="center">XSS Grenade</h1>
 
 <p align="center">
   <b>Next-generation XSS detection engine for modern web applications.</b><br>
@@ -24,22 +24,22 @@
 
 ---
 
-## 🚀 Why XSS Grenade?
+## Why XSS Grenade?
 
 Most scanners stop at **reflections** — "your input came back in the page." XSS Grenade goes further and confirms **real, exploitable vulnerabilities** in a real browser.
 
-- 🧠 **Context-aware payload engine** — HTML / attribute / URL / JS / CSS / comment
-- 🌐 **Built for modern apps** — SPAs, React, Angular, Vue, SSR / hydration
-- 🔍 **Finds real attack vectors** — not just echoed payloads
-- ⚡ **Headless-browser verification** — cuts false positives to near zero
-- 💣 **Bug-bounty focused** — the vectors that actually pay out
+-  **Context-aware payload engine** — HTML / attribute / URL / JS / CSS / comment
+-  **Built for modern apps** — SPAs, React, Angular, Vue, SSR / hydration
+-  **Finds real attack vectors** — not just echoed payloads
+-  **Headless-browser verification** — cuts false positives to near zero
+-  **Bug-bounty focused** — the vectors that actually pay out
 
 > [!NOTE]
 > **New to XSS?** Cross-Site Scripting is when an app renders attacker-controlled input as active code in a victim's browser. A "reflection" only means your input *appeared* in the response — it isn't a bug until it actually **executes**. XSS Grenade does that last, hard step for you: it loads the page in a real headless Chromium and checks whether the payload *fires*.
 
 ---
 
-## 🧬 What makes it different
+## What makes it different
 
 | | |
 |---|---|
@@ -52,7 +52,7 @@ Most scanners stop at **reflections** — "your input came back in the page." XS
 
 ---
 
-## 🖥️ Interface preview
+## GUI Preview
 
 <p align="center">
   <img src="assets/screenshot.jpg" alt="XSS Grenade GUI — live attack-surface graph, real-time findings, browser-verified results" width="960">
@@ -62,7 +62,7 @@ A live attack-surface graph, real-time severity-ranked findings, and browser-ver
 
 ---
 
-## ⚡ Quick start
+## Quick start
 
 ```bash
 git clone https://github.com/tX-c0re/xss-grenade.git
@@ -82,7 +82,7 @@ python xss_grenade_gui.py
 
 ---
 
-## 🎯 Usage
+## Usage
 
 1. **Enter the target URL** in the top bar.
 2. **Pick your modules** in the **SETTINGS** tab (or keep the sensible defaults).
@@ -96,9 +96,9 @@ python xss_grenade_gui.py
 
 Enable **“Smart Payloads”** for a quick, high-signal first pass:
 
-- ⚡ Cuts scan time from **hours → minutes**
-- 🎯 Keeps high-signal, per-context coverage
-- 💡 Ideal for first-pass recon before a deep run
+-  Cuts scan time from **hours → minutes**
+-  Keeps high-signal, per-context coverage
+-  Ideal for first-pass recon before a deep run
 
 ---
 
@@ -123,7 +123,7 @@ Fully modular — enable only what you need.
 
 ---
 
-## 📊 Reports
+## Reports
 
 One-click export, three formats:
 
@@ -144,7 +144,7 @@ One-click export, three formats:
 
 ---
 
-## 🧱 Project structure
+## Project structure
 
 ```text
 xss_grenade.py                 # Core scan engine (CLI + orchestration)
@@ -162,7 +162,7 @@ _html_report.py                # Self-contained HTML report
 
 ---
 
-## 🧭 Roadmap
+## Roadmap
 
 - [ ] Headless-verification improvements
 - [ ] AI-assisted, context-driven payload generation
